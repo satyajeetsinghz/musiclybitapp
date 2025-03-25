@@ -1,3 +1,31 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@keyframes scroll-marquee {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
+  
+  .marquee {
+    display: inline-block;
+    white-space: nowrap;
+    will-change: transform;
+    animation: scroll-marquee 6s linear infinite;
+  }
+  
+  .marquee-container {
+    overflow: hidden;
+    position: relative;
+    width: 100%; /* Fixed width for smooth animation */
+  }
+  
+  .marquee-inner {
+    display: inline-flex;
+    gap: 2rem; /* Adds space for looping effect */
+  }
+  

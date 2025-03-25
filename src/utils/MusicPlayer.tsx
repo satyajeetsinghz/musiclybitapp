@@ -104,8 +104,8 @@ const MusicPlayer = () => {
                 </div>
 
                 <div className="flex flex-col justify-center pl-3">
-                    <h2 className="max-md:text-[12px] text-sm text-white font-semibold">{currentSong?.title || "No Song Playing"}</h2>
-                    <h2 className="max-md:text-[10px] text-[10px] text-white font-medium mt-0.5">{currentSong?.artist || "Unknown Artist"}</h2>
+                    <h2 className="text-[12px] max-xs:text-[10px] text-white font-semibold">{currentSong?.title || "No Song Playing"}</h2>
+                    <h2 className="text-[10px] max-sm:text-[9px] text-white font-medium mt-0.5 max-sm:mt-0">{currentSong?.artist || "Unknown Artist"}</h2>
                 </div>
             </div>
             {/* Album Cover and Metadata ends  */}
