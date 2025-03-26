@@ -1,4 +1,4 @@
-import { Heart, Play } from "lucide-react";
+import { Heart, Play, Trash, X } from "lucide-react";
 import { albums, topPicks } from "../assets/assets";
 import { useMusic } from "../context/MusicContext";
 import { useState } from "react";
@@ -11,13 +11,15 @@ import { Album, Song } from "../types"; // ✅ Ensure all files use the same Alb
 
 interface MainContentProps {
     setFavoriteAlbums: Dispatch<SetStateAction<Album[]>>;
+    favoriteAlbums: Album[]; // ✅ Add this line
 }
 
-const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums }) => {
+const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums, favoriteAlbums }) => {
     const music = useMusic(); // ✅ Correctly retrieve context
     const { setCurrentSong, setIsPlaying } = music;
-    const { user, popupMessage, setPopupMessage } = useAuth();
+    const { user, popupMessage, setPopupMessage, removeFavoriteAlbum } = useAuth(); // Access globally define function here
     const [selectedAlbum, setSelectedAlbum] = useState<Album | null>(null);
+    const [showAlbums, setShowAlbums] = useState(false); // ✅ State for Album Sidebar
 
     const handlePlaySong = (song: Partial<Song>) => {
         if (!song.audio) return;
@@ -34,11 +36,11 @@ const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums }) => {
                 id: song.id ? String(song.id) : String(index + 1), // ✅ Ensure `id` is a string
             })),
         };
-    
+
         setSelectedAlbum(formattedAlbum);
     };
-    
-    
+
+
 
     const handleBack = () => {
         setSelectedAlbum(null);
@@ -46,16 +48,16 @@ const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums }) => {
 
     const addFavoriteAlbum = async (album: Album) => {
         if (!user) return;
-    
+
         try {
             const userRef = doc(db, "users", user.uid);
             const userSnap = await getDoc(userRef);
-    
+
             let existingFavorites: Album[] = [];
             if (userSnap.exists()) {
                 existingFavorites = userSnap.data().favorites || [];
             }
-    
+
             // ✅ Check if the album already exists in Firestore
             const isAlreadyFavorite = existingFavorites.some(fav => fav.id === String(album.id));
             if (isAlreadyFavorite) {
@@ -63,21 +65,31 @@ const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums }) => {
                 setTimeout(() => setPopupMessage(""), 3000);
                 return;
             }
-    
+
             // ✅ Add album only if it doesn't exist
             const updatedFavorites = [...existingFavorites, { ...album, id: String(album.id) }];
             await updateDoc(userRef, { favorites: updatedFavorites });
-    
+
             setFavoriteAlbums(updatedFavorites); // ✅ Update state immediately
-    
+
             setPopupMessage("Added to your library");
             setTimeout(() => setPopupMessage(""), 3000);
         } catch (error) {
             console.error("Error adding album: ", error);
         }
     };
-    
-    
+
+    const handleRemoveAlbum = (album: Album) => {
+        removeFavoriteAlbum?.(album);
+
+        // ✅ Update the favoriteAlbums state in App.tsx
+        setFavoriteAlbums((prev) => prev.filter((fav) => fav.id !== album.id));
+
+        setPopupMessage("Removed Album Successfully");
+        setTimeout(() => setPopupMessage(""), 3000);
+    };
+
+
 
 
     return (
@@ -90,6 +102,41 @@ const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums }) => {
                     {popupMessage}
                 </div>
             )}
+
+            {/* Albums Sidebar (Slide-in effect) only for Mobile device */}
+            <div
+                className={`absolute top-0 left-0 h-full w-[60%] max-md:w-[65%] bg-neutral-900 text-white transition-transform duration-300 ease-in-out z-40 md:hidden ${showAlbums ? "translate-x-0" : "-translate-x-full"
+                    }`}
+            >
+                <div className="p-4 flex justify-between items-center border-b border-neutral-700">
+                    <h2 className="text-sm font-bold">Liked Albums</h2>
+                    <button onClick={() => setShowAlbums(false)}>
+                        <X className="w-5 h-5 text-green-400 hover:text-white transition" />
+                    </button>
+                </div>
+
+                <div className="py-4 px-2 overflow-y-auto max-h-[80vh]">
+                    {favoriteAlbums.length > 0 ? (
+                        favoriteAlbums.map((album, index) => (
+                            <div key={index} className="flex items-center justify-between gap-3 p-2 hover:bg-neutral-800 rounded-md">
+                                <div className="flex items-center gap-3">
+                                    <img src={album.image} alt={album.name} className="w-12 h-12 rounded-full" />
+                                    <div>
+                                        <h3 className="text-[10px] font-semibold">{album.name}</h3>
+                                        <p className="text-[9px] text-gray-400">{album.artist}</p>
+                                    </div>
+                                </div>
+                                <button onClick={() => handleRemoveAlbum(album)}>
+                                    <Trash className="w-5 h-5 text-red-500 hover:text-red-700 transition" />
+                                </button>
+                            </div>
+                        ))
+                    ) : (
+                        <p className="text-gray-400 text-sm mt-4 text-center">No favorite albums yet.</p>
+                    )}
+                </div>
+            </div>
+
 
             {/* Show Album Details if an Album is Selected */}
             {selectedAlbum ? (
@@ -181,6 +228,13 @@ const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums }) => {
                         <div className="flex items-center gap-3 mx-1.5 mt-2">
                             <button className="bg-green-400 text-white max-md:text-[10px] text-sm text-center max-md:px-3 max-md:py-1 px-5 py-1.5 rounded-full">All</button>
                             <button className="bg-neutral-700 text-white max-md:text-[10px] text-sm text-center max-md:px-3 max-md:py-1 px-5 py-1.5 rounded-full">Music</button>
+                            {/* Albums Button (Only for Mobile) */}
+                            <button
+                                className="bg-neutral-700 text-white max-md:text-[10px] text-sm text-center max-md:px-3 max-md:py-1 px-5 py-1.5 rounded-full md:hidden"
+                                onClick={() => setShowAlbums(true)}
+                            >
+                                Albums
+                            </button>
                             <button className="bg-neutral-700 text-white max-md:text-[10px] text-sm text-center max-md:px-3 max-md:py-1 px-5 py-1.5 rounded-full">Podcasts</button>
                         </div>
                         {/* Navigation Options and User Profile icon ends */}

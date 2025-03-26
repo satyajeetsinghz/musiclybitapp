@@ -44,9 +44,9 @@ function App() {
 
         {user ? (
           <>
-            <div className="flex flex-1 gap-3 px-2 py-4 overflow-hidden relative z-10">
+            <div className="flex flex-1 gap-3 px-2 pb-4 overflow-hidden relative z-10">
               <Sidebar favoriteAlbums={favoriteAlbums} setFavoriteAlbums={setFavoriteAlbums} />
-              <MainContent setFavoriteAlbums={setFavoriteAlbums} />
+              <MainContent setFavoriteAlbums={setFavoriteAlbums}favoriteAlbums={favoriteAlbums}  />
             </div>
             <div className="relative z-20">
               <MusicPlayer />

@@ -98,7 +98,7 @@ const MusicPlayer = () => {
             <audio ref={audioRef} controls hidden />
 
             {/* Album Cover and Metadata  */}
-            <div className="w-[45%] sm:w-[30%] h-20 p-[8px] bg-ed-300 flex">
+            <div className="w-[60%] sm:w-[30%] h-20 p-[8px] bg-ed-300 flex">
                 <div className="w-[60px] h-[60px] max-xs:w-[50px] max-xs:h-[50px] max-xs:mt-[6px] rounded-md overflow-hidden">
                     <img className="w-full h-full object-cover object-center" src={currentSong?.image || "https://via.placeholder.com/60"} alt="" />
                 </div>
@@ -111,7 +111,7 @@ const MusicPlayer = () => {
             {/* Album Cover and Metadata ends  */}
 
             {/* Player Controls  */}
-            <div className="w-[55%] sm:w-[40%] h-20 px-1 py-2 bg-ellow-400 flex flex-col justify-center sm:justify-self-auto items-center">
+            <div className="w-[40%] sm:w-[40%] h-20 px-1 py-2 bg-ellow-400 flex flex-col justify-center sm:justify-self-auto items-center">
                 <div className="flex gap-6">
                     <button onClick={handlePrev}>
                         <img className="w-4" src="/assets/player ico/backward-ico.svg" alt="" />
