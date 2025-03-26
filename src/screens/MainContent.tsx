@@ -1,7 +1,7 @@
 import { Heart, Play, Trash, X } from "lucide-react";
 import { albums, topPicks } from "../assets/assets";
 import { useMusic } from "../context/MusicContext";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { doc, updateDoc, getDoc } from "firebase/firestore";
 import { db } from "../firebaseConfig";
@@ -20,6 +20,13 @@ const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums, favoriteAl
     const { user, popupMessage, setPopupMessage, removeFavoriteAlbum } = useAuth(); // Access globally define function here
     const [selectedAlbum, setSelectedAlbum] = useState<Album | null>(null);
     const [showAlbums, setShowAlbums] = useState(false); // ✅ State for Album Sidebar
+    const [activeButton, setActiveButton] = useState("All"); // ✅ Track active button
+
+    useEffect(() => {
+        if (!showAlbums) {
+            setActiveButton("All"); // ✅ Reset to All when mobile sidebar is closed
+        }
+    }, [showAlbums]);
 
     const handlePlaySong = (song: Partial<Song>) => {
         if (!song.audio) return;
@@ -38,6 +45,7 @@ const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums, favoriteAl
         };
 
         setSelectedAlbum(formattedAlbum);
+        setActiveButton("Albums"); // ✅ Set Albums button active when album is clicked
     };
 
 
@@ -225,16 +233,34 @@ const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums, favoriteAl
                     <div className="px-6 py-4">
                         {/* Navigation Options and User Profile icon */}
                         <div className="flex items-center gap-3 mx-1.5 mt-2">
-                            <button className="bg-green-400 text-white max-md:text-[10px] text-sm text-center max-md:px-3 max-md:py-1 px-5 py-1.5 rounded-full">All</button>
-                            <button className="bg-neutral-700 text-white max-md:text-[10px] text-sm text-center max-md:px-3 max-md:py-1 px-5 py-1.5 rounded-full">Music</button>
+                            <button
+                                className={`${activeButton === "All" ? "bg-green-400" : "bg-neutral-700"} text-white max-md:text-[10px] text-sm text-center max-md:px-3 max-md:py-1 px-5 py-1.5 rounded-full`}
+                                onClick={() => setActiveButton("All")}
+                            >
+                                All
+                            </button>
+                            <button
+                                className={`${activeButton === "Music" ? "bg-green-400" : "bg-neutral-700"} text-white max-md:text-[10px] text-sm text-center max-md:px-3 max-md:py-1 px-5 py-1.5 rounded-full`}
+                                onClick={() => setActiveButton("Music")}
+                            >
+                                Music
+                            </button>
                             {/* Albums Button (Only for Mobile) */}
                             <button
-                                className="bg-neutral-700 text-white max-md:text-[10px] text-sm text-center max-md:px-3 max-md:py-1 px-5 py-1.5 rounded-full md:hidden"
-                                onClick={() => setShowAlbums(true)}
+                                className={`${activeButton === "Albums" ? "bg-green-400" : "bg-neutral-700"} text-white max-md:text-[10px] text-sm text-center max-md:px-3 max-md:py-1 px-5 py-1.5 rounded-full md:hidden`}
+                                onClick={() => {
+                                    setShowAlbums(true);
+                                    setActiveButton("Albums");
+                                }}
                             >
                                 Albums
                             </button>
-                            <button className="bg-neutral-700 text-white max-md:text-[10px] text-sm text-center max-md:px-3 max-md:py-1 px-5 py-1.5 rounded-full hidden md:block">Podcasts</button>
+                            <button
+                                className={`${activeButton === "Podcasts" ? "bg-green-400" : "bg-neutral-700"} text-white max-md:text-[10px] text-sm text-center max-md:px-3 max-md:py-1 px-5 py-1.5 rounded-full hidden md:block`}
+                                onClick={() => setActiveButton("Podcasts")}
+                            >
+                                Podcasts
+                            </button>
                         </div>
                         {/* Navigation Options and User Profile icon ends */}
 
