@@ -105,7 +105,7 @@ const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums, favoriteAl
 
             {/* Albums Sidebar (Slide-in effect) only for Mobile device */}
             <div
-                className={`absolute top-0 left-0 h-full w-[60%] max-md:w-[65%] bg-neutral-900 text-white transition-transform duration-300 ease-in-out z-40 md:hidden ${showAlbums ? "translate-x-0" : "-translate-x-full"
+                className={`absolute top-0 left-0 h-full w-[60%] max-md:w-[65%] bg-neutral-900 text-white transition-transform duration-300 ease-in-out z-40 md:hidden ${showAlbums ? "translate-x-0 visible" : "-translate-x-full invisible"
                     }`}
             >
                 <div className="p-4 flex justify-between items-center border-b border-neutral-700">
@@ -136,7 +136,6 @@ const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums, favoriteAl
                     )}
                 </div>
             </div>
-
 
             {/* Show Album Details if an Album is Selected */}
             {selectedAlbum ? (
@@ -235,7 +234,7 @@ const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums, favoriteAl
                             >
                                 Albums
                             </button>
-                            <button className="bg-neutral-700 text-white max-md:text-[10px] text-sm text-center max-md:px-3 max-md:py-1 px-5 py-1.5 rounded-full">Podcasts</button>
+                            <button className="bg-neutral-700 text-white max-md:text-[10px] text-sm text-center max-md:px-3 max-md:py-1 px-5 py-1.5 rounded-full hidden md:block">Podcasts</button>
                         </div>
                         {/* Navigation Options and User Profile icon ends */}
 
