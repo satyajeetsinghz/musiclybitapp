@@ -27,7 +27,7 @@ const Navbar = () => {
         <div className="flex justify-between items-center w-full h-14 bg-neutral-950 text-white relative px-4">
             {/* Logo */}
             <div className="z-50">
-                <h2 className="text-xl font-extrabold cursor-pointer">Company Name</h2>
+                <h2 className="text-xl text-green-400 font-extrabold cursor-pointer -tracking-tighter">MB</h2>
             </div>
 
             {/* Buttons section - Only show if user is not logged in */}
