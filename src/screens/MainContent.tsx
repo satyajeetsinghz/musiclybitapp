@@ -8,6 +8,7 @@ import { db } from "../firebaseConfig";
 import { Dispatch, SetStateAction } from "react";
 import { Album, Song } from "../types"; // ✅ Ensure all files use the same Album type
 import MusicPage from "./MusicPage";
+import PodcastsPage from "./PodcastsPage";
 
 
 interface MainContentProps {
@@ -109,7 +110,7 @@ const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums, favoriteAl
 
             {/* Popup Notification */}
             {popupMessage && (
-                <div className="absolute bottom-[20px] max-xs:bottom-[40px] left-1/2 transform -translate-x-1/2 bg-white text-black text-sm max-xs:text-xs max-xs:min-w-max lg:text-base font-semibold px-4 py-2 rounded-lg flex items-center gap-2 shadow-lg transition-opacity duration-500">
+                <div className="absolute bottom-[20px] left-1/2 transform -translate-x-1/2 bg-white text-black text-sm max-xs:text-xs max-xs:min-w-max lg:text-base font-semibold px-4 py-2 rounded-lg flex items-center gap-2 shadow-lg transition-opacity duration-500">
                     {/* <CheckCircle className="text-green-400" size={20} /> */}
                     {popupMessage}
                 </div>
@@ -235,7 +236,17 @@ const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums, favoriteAl
             ) : (
                 <>
                     <div className="px-6 py-4">
-                        {activePage === "Music" ? <MusicPage handleBack={handleBack} /> : (
+                        {/* Dynamic Page Rendering */}
+                        {activePage === "Music" && <MusicPage handleBack={() => {
+                            setActivePage("All")
+                            setActiveButton("All");  // Reset active button
+                        }} />}
+                        {activePage === "Podcasts" && <PodcastsPage handleBack={() => {
+                            setActivePage("All")
+                            setActiveButton("All");  // Reset active button
+                        }} />}
+
+                        {activePage === "All" && (
                             <>
                                 {/* Navigation Options and User Profile icon */}
                                 <div className="flex items-center gap-3 mx-1.5 mt-2">
@@ -270,7 +281,10 @@ const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums, favoriteAl
                                     </button>
                                     <button
                                         className={`${activeButton === "Podcasts" ? "bg-green-400" : "bg-neutral-700"} text-white max-md:text-[10px] text-sm text-center max-md:px-3 max-md:py-1 px-5 py-1.5 rounded-full hidden md:block`}
-                                        onClick={() => setActiveButton("Podcasts")}
+                                        onClick={() => {
+                                            setActiveButton("Podcasts");
+                                            setActivePage("Podcasts")
+                                        }}
                                     >
                                         Podcasts
                                     </button>
