@@ -109,7 +109,7 @@ const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums, favoriteAl
 
             {/* Popup Notification */}
             {popupMessage && (
-                <div className="absolute bottom-[20px] left-1/2 transform -translate-x-1/2 bg-white text-black text-sm max-xs:text-xs max-xs:min-w-max lg:text-base font-semibold px-4 py-2 rounded-lg flex items-center gap-2 shadow-lg transition-opacity duration-500">
+                <div className="absolute bottom-[20px] max-xs:bottom-[40px] left-1/2 transform -translate-x-1/2 bg-white text-black text-sm max-xs:text-xs max-xs:min-w-max lg:text-base font-semibold px-4 py-2 rounded-lg flex items-center gap-2 shadow-lg transition-opacity duration-500">
                     {/* <CheckCircle className="text-green-400" size={20} /> */}
                     {popupMessage}
                 </div>
