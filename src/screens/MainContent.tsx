@@ -186,7 +186,7 @@ const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums, favoriteAl
                                 <div
                                     onClick={() => handlePlaySong(song)}
                                     key={song.id || index}
-                                    className="flex items-center justify-between hover:bg-neutral-800 px-6 py-3 rounded-md cursor-pointer"
+                                    className="flex items-center justify-between max-xsm:w-[330px] hover:bg-neutral-800 px-6 py-3 rounded-md cursor-pointer"
                                 >
                                     {/* Song Index, Cover Image & Details */}
                                     <div className="flex items-center gap-4 w-[40%] min-w-[200px]">
@@ -280,7 +280,7 @@ const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums, favoriteAl
                                         Library
                                     </button>
                                     <button
-                                        className={`${activeButton === "Podcasts" ? "bg-green-400" : "bg-neutral-700"} text-white max-md:text-[10px] text-sm text-center max-md:px-3 max-md:py-1 px-5 py-1.5 rounded-full hidden md:block`}
+                                        className={`${activeButton === "Podcasts" ? "bg-green-400" : "bg-neutral-700"} text-white max-md:text-[10px] text-sm text-center max-md:px-3 max-md:py-1 px-5 py-1.5 rounded-full`}
                                         onClick={() => {
                                             setActiveButton("Podcasts");
                                             setActivePage("Podcasts")

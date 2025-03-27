@@ -10,6 +10,7 @@ export default {
         "max-md": { max: "767px" }, // Custom max-width 768px breakpoint
         'max-sm': { max: '639px' }, // Targets screen sizes <= 639px
         'max-xs': { max: '446px' }, // Targets screen sizes <= 479px
+        'max-xsm': { min: '360px', max: '391px' }, // Targets screen sizes <= 479px
       },
     },
   },
