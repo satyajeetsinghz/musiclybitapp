@@ -7,6 +7,7 @@ import { doc, updateDoc, getDoc } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 import { Dispatch, SetStateAction } from "react";
 import { Album, Song } from "../types"; // ✅ Ensure all files use the same Album type
+import MusicPage from "./MusicPage";
 
 
 interface MainContentProps {
@@ -21,6 +22,7 @@ const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums, favoriteAl
     const [selectedAlbum, setSelectedAlbum] = useState<Album | null>(null);
     const [showAlbums, setShowAlbums] = useState(false); // ✅ State for Album Sidebar
     const [activeButton, setActiveButton] = useState("All"); // ✅ Track active button
+    const [activePage, setActivePage] = useState("All");
 
     useEffect(() => {
         if (!showAlbums) {
@@ -52,6 +54,8 @@ const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums, favoriteAl
 
     const handleBack = () => {
         setSelectedAlbum(null);
+        setActiveButton("All");
+        setActivePage("All");
     };
 
     const addFavoriteAlbum = async (album: Album) => {
@@ -105,7 +109,7 @@ const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums, favoriteAl
 
             {/* Popup Notification */}
             {popupMessage && (
-                <div className="absolute bottom-[20px] left-1/2 transform -translate-x-1/2 bg-white text-black text-sm lg:text-base font-semibold px-4 py-2 rounded-lg flex items-center gap-2 shadow-lg transition-opacity duration-500">
+                <div className="absolute bottom-[20px] left-1/2 transform -translate-x-1/2 bg-white text-black text-sm max-xs:text-xs max-xs:min-w-max lg:text-base font-semibold px-4 py-2 rounded-lg flex items-center gap-2 shadow-lg transition-opacity duration-500">
                     {/* <CheckCircle className="text-green-400" size={20} /> */}
                     {popupMessage}
                 </div>
@@ -117,7 +121,7 @@ const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums, favoriteAl
                     }`}
             >
                 <div className="p-4 flex justify-between items-center border-b border-neutral-700">
-                    <h2 className="text-sm font-bold">Liked Albums</h2>
+                    <h2 className="text-sm font-bold">Liked Album</h2>
                     <button onClick={() => setShowAlbums(false)}>
                         <X className="w-5 h-5 text-green-400 hover:text-white transition" />
                     </button>
@@ -134,7 +138,7 @@ const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums, favoriteAl
                                         <p className="text-[9px] text-gray-400">{album.artist}</p>
                                     </div>
                                 </div>
-                                <button onClick={() => handleRemoveAlbum(album)}>
+                                <button className="pr-2" onClick={() => handleRemoveAlbum(album)}>
                                     <Trash className="w-5 h-5 text-red-500 hover:text-red-700 transition" />
                                 </button>
                             </div>
@@ -231,81 +235,93 @@ const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums, favoriteAl
             ) : (
                 <>
                     <div className="px-6 py-4">
-                        {/* Navigation Options and User Profile icon */}
-                        <div className="flex items-center gap-3 mx-1.5 mt-2">
-                            <button
-                                className={`${activeButton === "All" ? "bg-green-400" : "bg-neutral-700"} text-white max-md:text-[10px] text-sm text-center max-md:px-3 max-md:py-1 px-5 py-1.5 rounded-full`}
-                                onClick={() => setActiveButton("All")}
-                            >
-                                All
-                            </button>
-                            <button
-                                className={`${activeButton === "Music" ? "bg-green-400" : "bg-neutral-700"} text-white max-md:text-[10px] text-sm text-center max-md:px-3 max-md:py-1 px-5 py-1.5 rounded-full`}
-                                onClick={() => setActiveButton("Music")}
-                            >
-                                Music
-                            </button>
-                            {/* Albums Button (Only for Mobile) */}
-                            <button
-                                className={`${activeButton === "Albums" ? "bg-green-400" : "bg-neutral-700"} text-white max-md:text-[10px] text-sm text-center max-md:px-3 max-md:py-1 px-5 py-1.5 rounded-full md:hidden`}
-                                onClick={() => {
-                                    setShowAlbums(true);
-                                    setActiveButton("Albums");
-                                }}
-                            >
-                                Albums
-                            </button>
-                            <button
-                                className={`${activeButton === "Podcasts" ? "bg-green-400" : "bg-neutral-700"} text-white max-md:text-[10px] text-sm text-center max-md:px-3 max-md:py-1 px-5 py-1.5 rounded-full hidden md:block`}
-                                onClick={() => setActiveButton("Podcasts")}
-                            >
-                                Podcasts
-                            </button>
-                        </div>
-                        {/* Navigation Options and User Profile icon ends */}
+                        {activePage === "Music" ? <MusicPage handleBack={handleBack} /> : (
+                            <>
+                                {/* Navigation Options and User Profile icon */}
+                                <div className="flex items-center gap-3 mx-1.5 mt-2">
+                                    <button
+                                        className={`${activeButton === "All" ? "bg-green-400" : "bg-neutral-700"} text-white max-md:text-[10px] text-sm text-center max-md:px-3 max-md:py-1 px-5 py-1.5 rounded-full`}
+                                        onClick={() => {
+                                            setActiveButton("All")
+                                            setActivePage("All");
+                                        }}
 
-                        {/* Top Albums Section */}
-                        <div className="w-full min-h-max bg-neutral-00 mt-8 rounded-md">
-                            <div className="grid grid-cols-2 gap-3 px-2 py-3">
-                                {albums.map((album) => (
-                                    <div key={album.id} onClick={() => handleAlbumClick(album)} className="w-full max-md:h-10 h-14 bg-neutral-800 hover:bg-neutral-700 rounded-md relative group cursor-pointer">
-                                        <div className="flex items-center">
-                                            <img className="size-14 max-md:size-10 object-center object-cover rounded-l-md" src={album.image} alt={album.name} />
-                                            <h3 className="ml-2 max-md:text-[12px] font-bold text-white">{album.name}</h3>
-                                        </div>
-
-                                        <button onClick={(e) => { e.stopPropagation(); addFavoriteAlbum(album); }} className="absolute max-md:bottom-[6px] bottom-[16px] max-md:right-[8px] right-[10px] max-md:text-[12px] opacity-0 group-hover:opacity-100 bg-reen-500 rounded-full hover:bg-reen-400 transition p-1.5">
-                                            <Heart className="w-4 h-4" fill="red" />
-                                        </button>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                        {/* Top Albums Section ends */}
-
-                        {/* Top Picks Section */}
-                        <div className="w-full min-h-max bg-neutral-00 mt-8 rounded-md">
-                            <div className="pb-3 py-1">
-                                <h2 className="text-2xl max-md:text-xl font-bold ml-2">Top Picks</h2>
-                                <div className="flex overflow-x-auto gap-4">
-                                    {topPicks.map((pick) => (
-                                        <div key={pick.id} onClick={() => handlePlaySong(pick)} className="relative w-[160px] max-md:min-w-[160px] md:min-w-[160px] h-[200px] max-md:min-h-[190px] p-2 bg-transparent hover:bg-neutral-800 mt-4 rounded-md group cursor-pointer">
-                                            <img className="w-[180px] h-[130px] object-cover object-center rounded-md" src={pick.image} alt={pick.title} />
-                                            <p className="pl-0.5 mt-2 text-sm max-md:text-[12px] font-semibold text-neutral-300">{pick.title}</p>
-                                            <p className="pl-0.5 mt-0.5 max-md:mt-0 text-xs max-md:text-[10px] font-semibold text-neutral-300">{pick.artist}</p>
-                                            <button className="absolute bottom-[70px] bg-green-500 rounded-full hover:bg-green-400 transition p-1.5 max-md:bottom-[70px] right-[16px] text-base opacity-0 group-hover:opacity-100">
-                                                <Play className="w-4 h-4 text-black" fill="black" />
-                                            </button>
-                                        </div>
-                                    ))}
+                                    >
+                                        All
+                                    </button>
+                                    <button
+                                        className={`${activeButton === "Music" ? "bg-green-400" : "bg-neutral-700"} text-white max-md:text-[10px] text-sm text-center max-md:px-3 max-md:py-1 px-5 py-1.5 rounded-full`}
+                                        onClick={() => {
+                                            setActiveButton("Music");
+                                            setActivePage("Music");
+                                        }}
+                                    >
+                                        Music
+                                    </button>
+                                    {/* Albums Button (Only for Mobile) */}
+                                    <button
+                                        className={`${activeButton === "Library" ? "bg-green-400" : "bg-neutral-700"} text-white max-md:text-[10px] text-sm text-center max-md:px-3 max-md:py-1 px-5 py-1.5 rounded-full md:hidden`}
+                                        onClick={() => {
+                                            setShowAlbums(true);
+                                            setActiveButton("Library");
+                                        }}
+                                    >
+                                        Library
+                                    </button>
+                                    <button
+                                        className={`${activeButton === "Podcasts" ? "bg-green-400" : "bg-neutral-700"} text-white max-md:text-[10px] text-sm text-center max-md:px-3 max-md:py-1 px-5 py-1.5 rounded-full hidden md:block`}
+                                        onClick={() => setActiveButton("Podcasts")}
+                                    >
+                                        Podcasts
+                                    </button>
                                 </div>
-                            </div>
-                        </div>
-                        {/* Top Picks Section */}
+                                {/* Navigation Options and User Profile icon ends */}
+
+                                {/* Top Albums Section */}
+                                <div className="w-full min-h-max bg-neutral-00 mt-8 rounded-md">
+                                    <div className="grid grid-cols-2 gap-3 px-2 max-xs:px-0 py-3">
+                                        {albums.map((album) => (
+                                            <div key={album.id} onClick={() => handleAlbumClick(album)} className="w-full max-md:h-10 h-14 bg-neutral-800 hover:bg-neutral-700 rounded-md relative group cursor-pointer">
+                                                <div className="flex items-center">
+                                                    <img className="size-14 max-md:size-10 object-center object-cover rounded-l-md" src={album.image} alt={album.name} />
+                                                    <h3 className="ml-2 max-md:text-[12px] font-bold text-white">{album.name}</h3>
+                                                </div>
+
+                                                <button onClick={(e) => { e.stopPropagation(); addFavoriteAlbum(album); }} className="absolute max-md:bottom-[6px] bottom-[16px] max-md:right-[8px] right-[10px] max-md:text-[12px] opacity-0 group-hover:opacity-100 bg-reen-500 rounded-full hover:bg-reen-400 transition p-1.5">
+                                                    <Heart className="w-4 h-4" fill="red" />
+                                                </button>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                                {/* Top Albums Section ends */}
+
+                                {/* Top Picks Section */}
+                                <div className="w-full min-h-max bg-neutral-00 mt-8 rounded-md">
+                                    <div className="pb-3 py-1">
+                                        <h2 className="text-2xl max-md:text-xl font-bold ml-2">Top Picks</h2>
+                                        <div className="flex overflow-x-auto gap-4">
+                                            {topPicks.map((pick) => (
+                                                <div key={pick.id} onClick={() => handlePlaySong(pick)} className="relative w-[160px] max-md:min-w-[160px] md:min-w-[160px] h-[200px] max-md:min-h-[190px] p-2 bg-transparent hover:bg-neutral-800 mt-4 rounded-md group cursor-pointer">
+                                                    <img className="w-[180px] h-[130px] object-cover object-center rounded-md" src={pick.image} alt={pick.title} />
+                                                    <p className="pl-0.5 mt-2 text-sm max-md:text-[12px] font-semibold text-neutral-300">{pick.title}</p>
+                                                    <p className="pl-0.5 mt-0.5 max-md:mt-0 text-xs max-md:text-[10px] font-semibold text-neutral-300">{pick.artist}</p>
+                                                    <button className="absolute bottom-[70px] bg-green-500 rounded-full hover:bg-green-400 transition p-1.5 max-md:bottom-[70px] right-[16px] text-base opacity-0 group-hover:opacity-100">
+                                                        <Play className="w-4 h-4 text-black" fill="black" />
+                                                    </button>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                                {/* Top Picks Section */}
+                            </>
+                        )}
                     </div>
                 </>
-            )}
-        </div>
+            )
+            }
+        </div >
     );
 };
 
