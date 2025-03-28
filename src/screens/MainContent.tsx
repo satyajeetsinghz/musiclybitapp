@@ -8,7 +8,7 @@ import { db } from "../firebaseConfig";
 import { Dispatch, SetStateAction } from "react";
 import { Album, Song } from "../types"; // ✅ Ensure all files use the same Album type
 import MusicPage from "./MusicPage";
-import PodcastsPage from "./PodcastsPage";
+import SongRequest from "./SongRequest";
 
 
 interface MainContentProps {
@@ -241,7 +241,7 @@ const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums, favoriteAl
                             setActivePage("All")
                             setActiveButton("All");  // Reset active button
                         }} />}
-                        {activePage === "Podcasts" && <PodcastsPage handleBack={() => {
+                        {activePage === "Request" && <SongRequest handleBack={() => {
                             setActivePage("All")
                             setActiveButton("All");  // Reset active button
                         }} />}
@@ -280,13 +280,13 @@ const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums, favoriteAl
                                         Library
                                     </button>
                                     <button
-                                        className={`${activeButton === "Podcasts" ? "bg-green-400" : "bg-neutral-700"} text-white max-md:text-[10px] text-sm text-center max-md:px-3 max-md:py-1 px-5 py-1.5 rounded-full`}
+                                        className={`${activeButton === "Request" ? "bg-green-400" : "bg-neutral-700"} text-white max-md:text-[10px] text-sm text-center max-md:px-3 max-md:py-1 px-5 py-1.5 rounded-full`}
                                         onClick={() => {
-                                            setActiveButton("Podcasts");
-                                            setActivePage("Podcasts")
+                                            setActiveButton("Request");
+                                            setActivePage("Request")
                                         }}
                                     >
-                                        Podcasts
+                                        Request
                                     </button>
                                 </div>
                                 {/* Navigation Options and User Profile icon ends */}
