@@ -219,7 +219,7 @@ const SongRequest: React.FC<SongRequestProps> = ({ handleBack }) => {
                                         />
                                         <div>
                                             <p className="font-bold max-xs:text-xs">{song.title} - {song.artist}</p>
-                                            <p className="text-[12px] font-semibold text-neutral-300">by {song.requestedByName}</p>
+                                            <p className="text-[10px] font-semibold text-neutral-300">by {song.requestedByName}</p>
                                         </div>
                                     </div>
                                     <div className="flex gap-3 text-sm font-semibold">
