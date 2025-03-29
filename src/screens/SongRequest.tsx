@@ -351,13 +351,12 @@ const SongRequest: React.FC<SongRequestProps> = ({ handleBack }) => {
                                         {/* 🗑️ Delete Button (Only if User Requested the Song) */}
                                         {song.requestedByUsers.some(user => user.uid === auth.currentUser?.uid) && (
                                             <button
-                                                onClick={() => handleDelete(song.id, auth.currentUser!.uid)}
+                                                onClick={() => handleDelete(song.id)}
                                                 className="text-white mt-3"
                                             >
                                                 <img className="w-8" src="/remove-ico-1.svg" alt="Delete" />
                                             </button>
                                         )}
-
                                     </div>
                                 </li>
                             ))
