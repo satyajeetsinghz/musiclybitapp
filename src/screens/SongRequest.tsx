@@ -287,7 +287,7 @@ const SongRequest: React.FC<SongRequestProps> = ({ handleBack }) => {
                         <h3 className="text-xl font-semibold">Song Requests</h3>
                         {requests.length > 0 ? (
                             requests.map((song) => (
-                                <li key={song.id} className="flex justify-between items-center p-2.5 mt-4 border-b-[1px] border-b-green-400 hover:bg-neutral-700 rounded-md">
+                                <li key={song.id} className="flex justify-between items-center p-2.5 mb-1 border-b-[1px] border-b-green-400 hover:bg-neutral-700 rounded-md">
                                     <div className="flex items-center gap-3">
                                         {/* 🎵 Album Cover */}
                                         <img
