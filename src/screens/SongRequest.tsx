@@ -329,6 +329,9 @@ const SongRequest: React.FC<SongRequestProps> = ({ handleBack }) => {
                                                                     src={user.photoURL || "/default-profile.png"}
                                                                     alt={user.name || "Anonymous"}
                                                                     className="w-5 h-5 rounded-full object-cover"
+                                                                    loading="eager" // ✅ Forces immediate loading (instead of lazy)
+                                                                    referrerPolicy="no-referrer" // ✅ Prevents CORS issues with Google/Facebook profile images
+                                                                    onError={(e) => (e.currentTarget.src = "/default-profile.png")} // ✅ Fallback if the image fails to load
                                                                 />
                                                                 <span className="text-white">{user.name || "Anonymous"}</span>
                                                             </li>
