@@ -234,7 +234,7 @@ const SongRequest: React.FC<SongRequestProps> = ({ handleBack }) => {
                                         {auth.currentUser?.uid === song.requestedBy && (
                                             <button onClick={() => handleDelete(song.id, song.requestedBy)}
                                                 className="text-white mt-3">
-                                                <img className="w-8" src="public/remove-ico-1.svg" alt="" />
+                                                <img className="w-8" src="/remove-ico-1.svg" alt="" />
                                             </button>
                                         )}
                                     </div>
