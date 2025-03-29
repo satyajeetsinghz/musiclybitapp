@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { db, auth } from "../firebaseConfig";
-import { collection, addDoc, onSnapshot, updateDoc, doc, arrayUnion, arrayRemove, deleteDoc } from "firebase/firestore";
+import { collection, addDoc, onSnapshot, updateDoc, doc, arrayUnion, arrayRemove, deleteDoc, getDocs, query, where } from "firebase/firestore";
 import { Timestamp } from "firebase/firestore"; // Import Firebase Timestamp
 import { searchSpotifySongs } from "../context/spotifyAPI";
 import { Search } from "lucide-react";
@@ -13,6 +13,8 @@ interface SongRequest {
     imageUrl: string;  // ✅ Fix: Added imageUrl to match Firestore data
     requestedBy: string;
     requestedByName: string;
+    requestedByPhotoURL: string;  // ✅ Added Profile Photo Field
+    requestedByUsers: { uid: string; name: string; photoURL: string }[]; // ✅ Store Multiple Users
     upvotes: string[];
     timestamp: Date;
 }
@@ -39,7 +41,7 @@ interface SongRequestProps {
 }
 
 const SongRequest: React.FC<SongRequestProps> = ({ handleBack }) => {
-    const [query, setQuery] = useState<string>("");
+    const [searchQuery, setSearchQuery] = useState<string>("");
     const [searchResults, setSearchResults] = useState<SpotifySong[]>([]);
     const [requests, setRequests] = useState<SongRequest[]>([]);
 
@@ -55,6 +57,8 @@ const SongRequest: React.FC<SongRequestProps> = ({ handleBack }) => {
                     imageUrl: data.imageUrl || "/default-image.png",  // ✅ Fix: Ensure `imageUrl` exists
                     requestedBy: data.requestedBy || "Unknown User",
                     requestedByName: data.requestedByName || "Anonymous",
+                    requestedByPhotoURL: data.requestedByPhotoURL || "/default-profile.png", // ✅ Fetch Profile Photo
+                    requestedByUsers: data.requestedByUsers || [], // ✅ Fetch all requesters
                     upvotes: Array.isArray(data.upvotes) ? data.upvotes : [],
                     timestamp: data.timestamp instanceof Timestamp ? data.timestamp.toDate() : new Date(),
                 };
@@ -65,10 +69,10 @@ const SongRequest: React.FC<SongRequestProps> = ({ handleBack }) => {
     }, []);
 
     const handleSearch = async () => {
-        if (!query.trim()) return;
+        if (!searchQuery.trim()) return;
 
         try {
-            const results: SpotifyTrack[] = await searchSpotifySongs(query);
+            const results: SpotifyTrack[] = await searchSpotifySongs(searchQuery);
 
             // ✅ Safely extract album images, avoiding undefined errors
             const formattedResults: SpotifySong[] = results.map((track) => ({
@@ -85,27 +89,68 @@ const SongRequest: React.FC<SongRequestProps> = ({ handleBack }) => {
     };
 
 
-    // ✅ Add Requested Song
     const handleRequest = async (song: SpotifySong) => {
         if (!auth.currentUser) return alert("Please log in first!");
 
+        const user = {
+            uid: auth.currentUser.uid,
+            name: auth.currentUser.displayName || "Anonymous",
+            photoURL: auth.currentUser.photoURL || "/default-profile.png",
+        };
+
         try {
-            await addDoc(collection(db, "songRequests"), {
-                title: song.name,
-                artist: song.artists[0]?.name || "Unknown Artist",
-                imageUrl: song.albumImage,  // ✅ Save album image to Firestore
-                requestedBy: auth.currentUser.uid,
-                requestedByName: auth.currentUser.displayName || "Anonymous",
-                upvotes: [],
-                timestamp: new Date(),
-            });
+            const songRef = collection(db, "songRequests");
+
+            // 🔹 Check if the song already exists
+            const songQuery = query(
+                songRef,
+                where("title", "==", song.name),
+                where("artist", "==", song.artists[0]?.name)
+            );
+            const querySnapshot = await getDocs(songQuery);
+
+            if (!querySnapshot.empty) {
+                // ✅ If song exists, update the existing request
+                const existingDoc = querySnapshot.docs[0];
+                const existingData = existingDoc.data() as {
+                    requestedByUsers?: { uid: string; name: string; photoURL: string }[];
+                };
+
+                const requestedByUsers = existingData?.requestedByUsers || [];
+
+                // 🔹 Check if the user has already requested this song
+                const alreadyRequested = requestedByUsers.some((reqUser) => reqUser.uid === user.uid);
+                if (alreadyRequested) {
+                    alert("You have already requested this song!");
+                    return;
+                }
+
+                // ✅ Append new user to the existing song request
+                await updateDoc(doc(db, "songRequests", existingDoc.id), {
+                    requestedByUsers: arrayUnion(user),
+                });
+
+            } else {
+                // ✅ If song doesn't exist, add a new request
+                await addDoc(songRef, {
+                    title: song.name,
+                    artist: song.artists[0]?.name || "Unknown Artist",
+                    imageUrl: song.albumImage,
+                    requestedByUsers: [user], // Store first requester
+                    upvotes: [],
+                    timestamp: new Date(),
+                });
+            }
 
             setSearchResults([]); // Clear search results after adding
-            setQuery(""); // Reset search input
+            setSearchQuery(""); // Reset search input
         } catch (error) {
             console.error("Error adding song request:", error);
         }
     };
+
+
+
 
     // ✅ Handle Upvote
     const handleUpvote = async (id: string, upvotes: string[]) => {
@@ -135,7 +180,7 @@ const SongRequest: React.FC<SongRequestProps> = ({ handleBack }) => {
 
     const handleCancelSearch = () => {
         setSearchResults([]); // Clear search results
-        setQuery(""); // Reset search input
+        setSearchQuery(""); // Reset search input
     };
 
 
@@ -152,14 +197,32 @@ const SongRequest: React.FC<SongRequestProps> = ({ handleBack }) => {
             <div className="mt-8 flex justify-between items-center gap-2 p-1">
                 {/* <div className="text-lg max-xs:text-sm">Search your favorite songs</div> */}
                 <div className="flex max-xs:w-full sm:min-w-full xl:min-w-[50%] gap-2">
-                    <input
-                        type="text"
-                        placeholder="Search for a song?"
-                        value={query}
-                        onChange={(e) => setQuery(e.target.value)}
-                        onKeyDown={(e) => e.key === "Enter" && handleSearch()} // 🔹 Trigger search on Enter key
-                        className="p-2 text-neutral-800 border rounded-full w-full"
-                    />
+                    <div className="relative w-full">
+                        <input
+                            type="text"
+                            placeholder="What do you want to search?"
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            onKeyDown={(e) => e.key === "Enter" && handleSearch()} // 🔹 Trigger search on Enter key
+                            className={`p-2 pl-4 pr-10 text-sm font-semibold ${searchQuery ? "text-white" : "text-neutral-600"
+                                } bg-neutral-800 rounded-full w-full transition-colors`}
+                        />
+
+                        {/* ❌ Clear Button (Inside Input) */}
+                        {searchQuery && (
+                            <button
+                                onClick={() => {
+                                    setSearchQuery(""); // ✅ Clear input text
+                                    setSearchResults([]); // ✅ Close search results
+                                }}
+                                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white"
+                            >
+                                <h3 className="p-2 pr-2 text-sm font-semibold">Clear</h3>
+                            </button>
+                        )}
+                    </div>
+
+
                     <button onClick={handleSearch} className="">
                         <Search className="w-6 h-6 hover:text-green-400" />
                     </button>
@@ -170,17 +233,20 @@ const SongRequest: React.FC<SongRequestProps> = ({ handleBack }) => {
             {searchResults.length > 0 ? (
                 <ul className="mt-4 bg-neutral-00 px-4 py-2.5 max-xs:px-1 max-xs:py-1 rounded h-[395px] max-xs:h-[420px] flex flex-col overflow-y-auto">
                     <div className="flex justify-between items-center px-2 py-2">
-                        <h3 className="text-white text-lg font-semibold">Select a Song to Request</h3>
+                        <h3 className="text-neutral-300 text-lg font-semibold">Select a Song to Request</h3>
                         {/* ❌ Cancel Button */}
                         <button
                             onClick={handleCancelSearch}
                             className="text-white text-sm"
                         >
-                            <img className="w-6" src="/assets/player ico/cancel-ico.svg" alt="" />
+                            <div className="inline-flex items-center gap-3">
+                                <h3 className="hidden lg:block text-base font-semibold text-neutral-300 hover:text-neutral-100 -mt-1">Close</h3>
+                                <img className="w-6" src="/assets/player ico/cancel-ico.svg" alt="" />
+                            </div>
                         </button>
                     </div>
                     {searchResults.map((song) => (
-                        <li key={song.id} className="flex justify-between items-center p-2 hover:bg-neutral-700 mt-6 border-b-[1px] border-b-green-400 last:border-b-0 rounded-md">
+                        <li key={song.id} className="flex justify-between items-center p-2 hover:bg-neutral-700 mt-2 border-b-[1px] border-b-green-400 last:border-b-0 rounded-md">
                             <div className="flex items-center gap-3">
                                 {/* 🎵 Album Cover */}
                                 <img
@@ -195,8 +261,8 @@ const SongRequest: React.FC<SongRequestProps> = ({ handleBack }) => {
                                 className="rounded"
                             >
                                 <div className="inline-flex items-center gap-3">
-                                <h3 className="hidden lg:block text-sm font-semibold text-neutral-300 -mt-1">Request</h3>
-                                <img src="/assets/player ico/request-ico.svg" alt="" />
+                                    <h3 className="hidden lg:block text-sm font-semibold text-neutral-300 -mt-1">Request</h3>
+                                    <img src="/assets/player ico/request-ico.svg" alt="" />
                                 </div>
                             </button>
                         </li>
@@ -219,8 +285,46 @@ const SongRequest: React.FC<SongRequestProps> = ({ handleBack }) => {
                                         />
                                         <div>
                                             <p className="font-bold max-xs:text-xs">{song.title} - {song.artist}</p>
-                                            <p className="text-[10px] font-semibold text-neutral-300">by {song.requestedByName}</p>
+
+                                            {/* 🎭 Profile Picture Group (Hover to Show List) */}
+                                            <div className="relative flex items-center -space-x-1 flex-wrap group cursor-pointer">
+                                                {/* 🔹 Show Up to 3 Requesters' Profile Images */}
+                                                {song.requestedByUsers.slice(0, 3).map((reqUser, index) => (
+                                                    <img
+                                                        key={index}
+                                                        src={reqUser.photoURL || "/default-profile.png"}
+                                                        alt={reqUser.name || "Anonymous"}
+                                                        className="w-6 h-6 max-xs:w-5 max-xs:h-5 rounded-full object-cover border-2 border-neutral-600 hover:border-green-400 transition-all duration-200"
+                                                    />
+                                                ))}
+
+                                                {/* ➕ Show "+X more" if there are additional users */}
+                                                {song.requestedByUsers.length > 3 && (
+                                                    <span className="text-xs font-semibold text-neutral-300 bg-neutral-800 px-2 py-1 rounded-full">
+                                                        +{song.requestedByUsers.length - 3} more
+                                                    </span>
+                                                )}
+
+                                                {/* 📝 Hoverable List of Requesters (Appears on Group Hover) */}
+                                                <div className="absolute left-0 mt-2 bg-neutral-800 text-white text-xs rounded-lg p-3 shadow-lg opacity-0 group-hover:opacity-100 group-hover:translate-y-1 transition-all duration-300 w-max max-w-[200px] z-10">
+                                                    <h4 className="font-semibold text-green-400 mb-1">Requested by:</h4>
+                                                    <ul className="flex flex-col gap-1">
+                                                        {song.requestedByUsers.map((user, idx) => (
+                                                            <li key={idx} className="flex items-center gap-2">
+                                                                <img
+                                                                    src={user.photoURL || "/default-profile.png"}
+                                                                    alt={user.name || "Anonymous"}
+                                                                    className="w-5 h-5 rounded-full object-cover"
+                                                                />
+                                                                <span className="text-white">{user.name || "Anonymous"}</span>
+                                                            </li>
+                                                        ))}
+                                                    </ul>
+                                                </div>
+                                            </div>
                                         </div>
+
+
                                     </div>
                                     <div className="flex gap-3 text-sm font-semibold">
                                         {/* 👍 Upvote Button */}
@@ -231,8 +335,8 @@ const SongRequest: React.FC<SongRequestProps> = ({ handleBack }) => {
                                         </button>
 
                                         {/* 🗑️ Delete Button */}
-                                        {auth.currentUser?.uid === song.requestedBy && (
-                                            <button onClick={() => handleDelete(song.id, song.requestedBy)}
+                                        {auth.currentUser?.uid === song.requestedByUsers[0]?.uid && (
+                                            <button onClick={() => handleDelete(song.id, song.requestedByUsers[0]?.uid)}
                                                 className="text-white mt-3">
                                                 <img className="w-8" src="/remove-ico-1.svg" alt="" />
                                             </button>
@@ -241,7 +345,7 @@ const SongRequest: React.FC<SongRequestProps> = ({ handleBack }) => {
                                 </li>
                             ))
                         ) : (
-                            <p className="text-gray-500 text-sm mt-4">No song requests yet.</p>
+                            <p className="text-neutral-500 text-sm md:text-base text-center font-semibold mt-16">No song requests yet.</p>
                         )}
                     </ul>
                 </div>
