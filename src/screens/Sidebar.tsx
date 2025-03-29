@@ -1,4 +1,4 @@
-import { ChevronRight, Library, Search, Trash2 } from "lucide-react";
+import { ChevronRight, Library, Search} from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { useState } from "react";
 import { Album } from "../types"; // ✅ Import from the same source
