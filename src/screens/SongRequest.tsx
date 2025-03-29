@@ -305,10 +305,12 @@ const SongRequest: React.FC<SongRequestProps> = ({ handleBack }) => {
                                                     </span>
                                                 )}
 
-                                                {/* 📝 Hoverable List of Requesters (Appears on Group Hover) */}
+                                                {/* 📝 Hoverable List of Requesters (Scrollable) */}
                                                 <div className="absolute left-0 mt-2 bg-neutral-800 text-white text-xs rounded-lg p-3 shadow-lg opacity-0 group-hover:opacity-100 group-hover:translate-y-1 transition-all duration-300 w-max max-w-[200px] z-10">
+
                                                     <h4 className="font-semibold text-green-400 mb-1">Requested by:</h4>
-                                                    <ul className="flex flex-col gap-1">
+
+                                                    <ul className="flex flex-col gap-1 max-h-32 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-500 scrollbar-track-gray-700">
                                                         {song.requestedByUsers.map((user, idx) => (
                                                             <li key={idx} className="flex items-center gap-2">
                                                                 <img
