@@ -33,7 +33,7 @@ const Sidebar: React.FC<SidebarProps> = ({ favoriteAlbums, setFavoriteAlbums }) 
 
 
     return (
-        <div className="w-[30%] max-h-[90%] max-md:hidden flex flex-col p-6 bg-neutral-900 text-white rounded-md relative">
+        <div className="w-[30%] max-h-[90%] max-md:hidden flex flex-col p-6 md:p-1 lg:p-6 bg-neutral-900 text-white rounded-md relative">
             {/* Popup Notification */}
             {popupMessage && (
                 <div className="hidden absolute top-4 left-1/2 transform -translate-x-1/2 bg-white text-black text-sm lg:text-base font-semibold px-4 py-2 rounded-lg shadow-lg transition-opacity duration-500">
@@ -75,12 +75,12 @@ const Sidebar: React.FC<SidebarProps> = ({ favoriteAlbums, setFavoriteAlbums }) 
                 <div className="flex flex-col space-y-4">
                     {favoriteAlbums.length > 0 ? (
                         favoriteAlbums.map((album: Album) => (
-                            <div key={album.id} className="flex items-center gap-4 justify-between group">
+                            <div key={album.id} className="flex items-center gap-4 justify-between group hover:bg-neutral-800 p-2 rounded-md cursor-pointer">
                                 <div className="flex items-center gap-4">
-                                    <img className="size-12 object-cover object-center rounded-full" src={album.image} alt="" />
+                                    <img className="size-12 md:size-10 object-cover object-center rounded-full" src={album.image} alt="" />
                                     <div>
-                                        <p className="text-sm font-semibold text-neutral-200">{album.name}</p>
-                                        <p className="text-sm font-semibold text-neutral-200">{album.artist}</p>
+                                        <p className="text-sm md:text-xs lg:text-sm font-semibold text-neutral-200">{album.name}</p>
+                                        <p className="text-sm md:text-[10px] lg:text-xs font-semibold text-neutral-400">{album.artist}</p>
                                     </div>
                                 </div>
 
@@ -90,7 +90,7 @@ const Sidebar: React.FC<SidebarProps> = ({ favoriteAlbums, setFavoriteAlbums }) 
                                     className="opacity-0 group-hover:opacity-100 transition text-red-500 hover:text-red-400"
                                     title="Remove Album"
                                 >
-                                    <Trash2 className="w-5 h-5" />
+                                    <img className="w-6 transition" src="/assets/player ico/remove-album.svg" alt="" />
                                 </button>
                             </div>
                         ))

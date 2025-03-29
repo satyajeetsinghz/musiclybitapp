@@ -1,4 +1,4 @@
-import { Heart, Play, Trash, X } from "lucide-react";
+import { Play, X } from "lucide-react";
 import { albums, topPicks } from "../assets/assets";
 import { useMusic } from "../context/MusicContext";
 import { useEffect, useState } from "react";
@@ -140,7 +140,7 @@ const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums, favoriteAl
                                     </div>
                                 </div>
                                 <button className="pr-2" onClick={() => handleRemoveAlbum(album)}>
-                                    <Trash className="w-5 h-5 text-red-500 hover:text-red-700 transition" />
+                                    <img className="transition" src="/assets/player ico/remove-album.svg" alt="" />
                                 </button>
                             </div>
                         ))
@@ -301,8 +301,8 @@ const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums, favoriteAl
                                                     <h3 className="ml-2 max-md:text-[12px] font-bold text-white">{album.name}</h3>
                                                 </div>
 
-                                                <button onClick={(e) => { e.stopPropagation(); addFavoriteAlbum(album); }} className="absolute max-md:bottom-[6px] bottom-[16px] max-md:right-[8px] right-[10px] max-md:text-[12px] opacity-0 group-hover:opacity-100 bg-reen-500 rounded-full hover:bg-reen-400 transition p-1.5">
-                                                    <Heart className="w-4 h-4" fill="red" />
+                                                <button onClick={(e) => { e.stopPropagation(); addFavoriteAlbum(album); }} className="absolute max-md:bottom-[6px] bottom-[12px] max-md:right-[8px] right-[10px] max-md:text-[12px] opacity-0 group-hover:opacity-100 bg-reen-500 rounded-full hover:bg-reen-400 transition p-1.5">
+                                                    <img className="w-6 transition" src="/assets/player ico/add-ico.svg" alt="" />
                                                 </button>
                                             </div>
                                         ))}
