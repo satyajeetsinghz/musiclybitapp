@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { db, auth } from "../firebaseConfig";
-import { collection, addDoc, onSnapshot, updateDoc, doc, arrayUnion, arrayRemove, deleteDoc, getDocs, query, where } from "firebase/firestore";
+import { collection, addDoc, onSnapshot, updateDoc, doc, arrayUnion, arrayRemove, deleteDoc, getDocs, query, where, getDoc } from "firebase/firestore";
 import { Timestamp } from "firebase/firestore"; // Import Firebase Timestamp
 import { searchSpotifySongs } from "../context/spotifyAPI";
 import { Search } from "lucide-react";
@@ -166,15 +166,27 @@ const SongRequest: React.FC<SongRequestProps> = ({ handleBack }) => {
         }
     };
 
-    // ✅ Handle Delete Request
-    const handleDelete = async (id: string, requestedBy: string) => {
+    const handleDelete = async (id: string) => {
         if (!auth.currentUser) return alert("Please log in first!");
-        if (auth.currentUser.uid !== requestedBy) return alert("You can only delete your own requests.");
 
         try {
-            await deleteDoc(doc(db, "songRequests", id));
+            const songRef = doc(db, "songRequests", id);
+            const songSnap = await getDoc(songRef);
+
+            if (!songSnap.exists()) return;
+
+            const songData = songSnap.data();
+            const updatedUsers = songData.requestedByUsers.filter((user: any) => user.uid !== auth.currentUser?.uid);
+
+            if (updatedUsers.length === 0) {
+                // ✅ If no users are left, delete the entire song request
+                await deleteDoc(songRef);
+            } else {
+                // ✅ Otherwise, just update the document and remove the user
+                await updateDoc(songRef, { requestedByUsers: updatedUsers });
+            }
         } catch (error) {
-            console.error("Error deleting song request:", error);
+            console.error("Error deleting user request:", error);
         }
     };
 
@@ -336,13 +348,16 @@ const SongRequest: React.FC<SongRequestProps> = ({ handleBack }) => {
                                             </div>
                                         </button>
 
-                                        {/* 🗑️ Delete Button */}
-                                        {auth.currentUser?.uid === song.requestedByUsers[0]?.uid && (
-                                            <button onClick={() => handleDelete(song.id, song.requestedByUsers[0]?.uid)}
-                                                className="text-white mt-3">
-                                                <img className="w-8" src="/remove-ico-1.svg" alt="" />
+                                        {/* 🗑️ Delete Button (Only if User Requested the Song) */}
+                                        {song.requestedByUsers.some(user => user.uid === auth.currentUser?.uid) && (
+                                            <button
+                                                onClick={() => handleDelete(song.id, auth.currentUser!.uid)}
+                                                className="text-white mt-3"
+                                            >
+                                                <img className="w-8" src="/remove-ico-1.svg" alt="Delete" />
                                             </button>
                                         )}
+
                                     </div>
                                 </li>
                             ))
