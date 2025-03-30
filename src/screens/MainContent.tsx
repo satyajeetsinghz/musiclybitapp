@@ -110,7 +110,7 @@ const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums, favoriteAl
 
             {/* Popup Notification */}
             {popupMessage && (
-                <div className="absolute bottom-[20px] left-1/2 transform -translate-x-1/2 bg-white text-black text-sm max-xs:text-xs max-xs:min-w-max lg:text-base font-semibold px-4 py-2 rounded-lg flex items-center gap-2 shadow-lg transition-opacity duration-500">
+                <div className="absolute bottom-20 md:bottom-[20px] left-1/2 transform -translate-x-1/2 bg-white text-black text-sm max-xs:text-xs max-xs:min-w-max lg:text-base font-semibold px-4 py-2 rounded-lg flex items-center gap-2 shadow-lg transition-opacity duration-500 z-50">
                     {/* <CheckCircle className="text-green-400" size={20} /> */}
                     {popupMessage}
                 </div>
@@ -301,7 +301,7 @@ const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums, favoriteAl
                                                     <h3 className="ml-2 max-md:text-[12px] font-bold text-white">{album.name}</h3>
                                                 </div>
 
-                                                <button onClick={(e) => { e.stopPropagation(); addFavoriteAlbum(album); }} className="absolute max-md:bottom-[6px] bottom-[12px] max-md:right-[8px] right-[10px] max-md:text-[12px] opacity-0 group-hover:opacity-100 bg-reen-500 rounded-full hover:bg-reen-400 transition p-1.5">
+                                                <button onClick={(e) => { e.stopPropagation(); addFavoriteAlbum(album); }} className="absolute max-md:bottom-[2px] bottom-[10px] max-md:right-[0px] right-[2px] max-md:text-[12px] opacity-0 group-hover:opacity-100 bg-reen-500 rounded-full hover:bg-reen-400 transition p-1.5">
                                                     <img className="w-6 transition" src="/assets/player ico/add-ico.svg" alt="" />
                                                 </button>
                                             </div>
