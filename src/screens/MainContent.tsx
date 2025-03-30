@@ -106,7 +106,7 @@ const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums, favoriteAl
 
 
     return (
-        <div className="w-[70%] max-md:w-full max-h-[90%] max-md:max-h-[92%] max-md:px-1 bg-neutral-900 text-white rounded-md relative">
+        <div className="w-[70%] max-md:w-full max-h-[90%] max-md:max-h-full max-md:px-1 bg-neutral-900 text-white rounded-md relative">
 
             {/* Popup Notification */}
             {popupMessage && (
