@@ -243,7 +243,7 @@ const SongRequest: React.FC<SongRequestProps> = ({ handleBack }) => {
 
             {/* 📌 Display Spotify Search Results */}
             {searchResults.length > 0 ? (
-                <ul className="bg-neutral-00 px-4 py-2.5 max-xs:px-1 max-xs:py-1 rounded h-[350px] max-xs:h-[420px] flex flex-col overflow-y-auto">
+                <ul className="bg-neutral-00 px-4 py-2.5 max-xs:px-1 max-xs:py-1 rounded h-[375px] max-xs:h-[420px] flex flex-col overflow-y-auto">
                     <div className="flex justify-start items-center px-2 py-4">
                         <h3 className="text-xl font-extrabold text-green-400">Select a Song to Request</h3>
                         {/* ❌ Cancel Button */}
@@ -283,7 +283,7 @@ const SongRequest: React.FC<SongRequestProps> = ({ handleBack }) => {
             ) : (
                 /* 📌 Requested Songs (Only Show When Search is Inactive) */
                 <div className="mt-3">
-                    <ul className="flex flex-col overflow-y-auto bg-neutral-00 rounded-md h-[395px] max-xs:h-[420px] p-3 cursor-pointer">
+                    <ul className="flex flex-col overflow-y-auto bg-neutral-00 rounded-md h-[350px] max-xs:h-[420px] p-3 cursor-pointer">
                         <h3 className="text-xl text-green-400 font-bold ml-2 mb-4">Song Requests</h3>
                         {requests.length > 0 ? (
                             requests.map((song) => (
