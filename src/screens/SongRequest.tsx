@@ -203,7 +203,7 @@ const SongRequest: React.FC<SongRequestProps> = ({ handleBack }) => {
                 <img className="w-[10px]" src="/assets/player ico/left-arrow.svg" alt="" />
             </button>
 
-            <h2 className="text-[24px] max-xs:text-[14px] font-bold text-center mt-3">Every request tunes our library to perfection – make your mark, shape the music!</h2>
+            <h2 className="text-[24px] max-xs:text-[14px] font-bold text-center mt-3">Every request tunes our library to perfection make your mark shape the music</h2>
 
             {/* 🎵 Search for Songs */}
             <div className="mt-12 flex justify-between items-center gap-2 p-1">
@@ -244,16 +244,16 @@ const SongRequest: React.FC<SongRequestProps> = ({ handleBack }) => {
             {/* 📌 Display Spotify Search Results */}
             {searchResults.length > 0 ? (
                 <ul className="bg-neutral-00 px-4 py-2.5 max-xs:px-1 max-xs:py-1 rounded h-[395px] max-xs:h-[420px] flex flex-col overflow-y-auto">
-                    <div className="flex justify-between items-center px-2 py-2">
-                        <h3 className="text-neutral-100 text-xl font-bold">Select a Song to Request</h3>
+                    <div className="flex justify-start items-center px-2 py-4">
+                        <h3 className="text-xl font-extrabold text-green-400">Select a Song to Request</h3>
                         {/* ❌ Cancel Button */}
                         <button
                             onClick={handleCancelSearch}
                             className="text-white text-sm"
                         >
                             <div className="inline-flex items-center gap-3">
-                                <h3 className="hidden lg:block text-base font-semibold text-neutral-300 hover:text-neutral-100 -mt-1">Close</h3>
-                                <img className="w-6" src="/assets/player ico/cancel-ico.svg" alt="" />
+                                <h3 className="hidden lg:block text-base font-semibold text-neutral-300 hover:text-neutral-100 -mt-1"></h3>
+                                {/* <img className="w-6" src="/assets/player ico/cancel-ico.svg" alt="" /> */}
                             </div>
                         </button>
                     </div>
@@ -284,7 +284,7 @@ const SongRequest: React.FC<SongRequestProps> = ({ handleBack }) => {
                 /* 📌 Requested Songs (Only Show When Search is Inactive) */
                 <div className="mt-3">
                     <ul className="flex flex-col overflow-y-auto bg-neutral-00 rounded-md h-[395px] max-xs:h-[420px] p-3 cursor-pointer">
-                        <h3 className="text-xl font-bold ml-2 mb-4">Song Requests</h3>
+                        <h3 className="text-xl text-green-400 font-bold ml-2 mb-4">Song Requests</h3>
                         {requests.length > 0 ? (
                             requests.map((song) => (
                                 <li key={song.id} className="flex justify-between items-center p-2.5 mb-1 border-b-[1px] border-b-green-400 hover:bg-neutral-700 rounded-md">

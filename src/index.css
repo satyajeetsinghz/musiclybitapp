@@ -1,31 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Urbanist:wght@100;200;300;400;500;600;700;800;900&display=swap');
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @keyframes scroll-marquee {
-    0% {
-      transform: translateX(100%);
-    }
-    100% {
-      transform: translateX(-100%);
-    }
+  0% {
+    transform: translateX(100%);
   }
-  
-  .marquee {
-    display: inline-block;
-    white-space: nowrap;
-    will-change: transform;
-    animation: scroll-marquee 6s linear infinite;
+
+  100% {
+    transform: translateX(-100%);
   }
-  
-  .marquee-container {
-    overflow: hidden;
-    position: relative;
-    width: 100%; /* Fixed width for smooth animation */
-  }
-  
-  .marquee-inner {
-    display: inline-flex;
-    gap: 2rem; /* Adds space for looping effect */
-  }
-  
+}
+
+.marquee {
+  display: inline-block;
+  white-space: nowrap;
+  will-change: transform;
+  animation: scroll-marquee 6s linear infinite;
+}
+
+.marquee-container {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  /* Fixed width for smooth animation */
+}
+
+.marquee-inner {
+  display: inline-flex;
+  gap: 2rem;
+  /* Adds space for looping effect */
+}
+
+body {
+  @apply font-urbanist;
+}

@@ -12,6 +12,9 @@ export default {
         'max-xs': { max: '446px' }, // Targets screen sizes <= 479px
         'max-xsm': { min: '360px', max: '391px' }, // Targets screen sizes <= 479px
       },
+      fontFamily: {
+        urbanist: ['Urbanist', 'sans-serif'],
+      },
     },
   },
   plugins: [],

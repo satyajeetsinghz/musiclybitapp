@@ -56,7 +56,7 @@ const Sidebar: React.FC<SidebarProps> = ({ favoriteAlbums, setFavoriteAlbums }) 
 
             {/* Artists and other section */}
             <div className="flex gap-2 mt-4">
-                <button className="bg-neutral-700 rounded-full text-center px-3 py-1.5 text-sm">Artists</button>
+                <button className="bg-neutral-700 rounded-full text-center font-normal px-3 py-1.5 text-sm">Artists</button>
             </div>
 
             {/* Search and Recents section */}
@@ -79,7 +79,7 @@ const Sidebar: React.FC<SidebarProps> = ({ favoriteAlbums, setFavoriteAlbums }) 
                                 <div className="flex items-center gap-4">
                                     <img className="size-12 md:size-10 object-cover object-center rounded-full" src={album.image} alt="" />
                                     <div>
-                                        <p className="text-sm md:text-xs lg:text-sm font-semibold text-neutral-200">{album.name}</p>
+                                        <p className="text-sm md:text-xs lg:text-sm font-bold text-neutral-200">{album.name}</p>
                                         <p className="text-sm md:text-[10px] lg:text-xs font-semibold text-neutral-400">{album.artist}</p>
                                     </div>
                                 </div>

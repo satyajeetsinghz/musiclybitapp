@@ -37,25 +37,29 @@ function App() {
 
   return (
     <MusicProvider>
-      <div className="w-full h-screen flex flex-col bg-neutral-950 relative overflow-hidden">
-        <div className="relative z-50">
-          <Navbar />
-        </div>
+      <div className="w-full min-h-screen md:h-screen flex flex-col bg-neutral-950 relative">
+  <div className="relative z-50">
+    <Navbar />
+  </div>
 
-        {user ? (
-          <>
-            <div className="flex flex-1 gap-3 px-2 pb-4 py-16 overflow-hidden relative z-10">
-              <Sidebar favoriteAlbums={favoriteAlbums} setFavoriteAlbums={setFavoriteAlbums} />
-              <MainContent setFavoriteAlbums={setFavoriteAlbums}favoriteAlbums={favoriteAlbums}  />
-            </div>
-            <div className="relative z-20">
-              <MusicPlayer />
-            </div>
-          </>
-        ) : (
-          <Login />
-        )}
+  {user ? (
+    <>
+      {/* Allow middle content to grow properly */}
+      <div className="flex flex-1 gap-3 px-2 pb-4 py-16 overflow-y-auto relative z-10">
+        <Sidebar favoriteAlbums={favoriteAlbums} setFavoriteAlbums={setFavoriteAlbums} />
+        <MainContent setFavoriteAlbums={setFavoriteAlbums} favoriteAlbums={favoriteAlbums} />
       </div>
+
+      {/* Fix MusicPlayer Position */}
+      <div className="relative z-20 w-full">
+        <MusicPlayer />
+      </div>
+    </>
+  ) : (
+    <Login />
+  )}
+</div>
+
     </MusicProvider>
   );
 }
