@@ -107,6 +107,10 @@ const MusicPlayer = () => {
         audioRef.current.muted = !isMuted;
     };
 
+    const handleSongEnd = () => {
+        setIsPlaying(false); // Set to play state when the song ends
+    };
+
 
     return (
         <>
@@ -114,7 +118,7 @@ const MusicPlayer = () => {
                 <div className="w-full h-16 md:h-20 bg-neutral-800/90 md:bg-neutral-950 flex justify-between items-center px-2 py-1 rounded-md md:rounded-none">
 
                     {/* Hidden Audio Element */}
-                    <audio ref={audioRef} controls hidden />
+                    <audio ref={audioRef} onEnded={handleSongEnd} controls hidden />
 
                     {/* Album Cover and Metadata  */}
                     <div className="w-[60%] sm:w-[30%] h-20 py-[8px] px-[2px] md:px-[8px] bg-ed-300 flex cursor-pointer">
@@ -136,7 +140,11 @@ const MusicPlayer = () => {
                                 <img className="w-4" src="/assets/player ico/backward-ico.svg" alt="" />
                             </button>
                             <button onClick={handlePlayPause}>
-                                {isPlaying ? <img className="w-8" src="/assets/player ico/pause-ico.svg" alt="" /> : <img className="w-8" src="/assets/player ico/play-ico.svg" alt="" />}
+                                {isPlaying ? (
+                                    <img className="w-8" src="/assets/player ico/pause-ico.svg" alt="Pause" />
+                                ) : (
+                                    <img className="w-8" src="/assets/player ico/play-ico.svg" alt="Play" />
+                                )}
                             </button>
                             <button onClick={handleNext}>
                                 <img className="w-4" src="/assets/player ico/forward-ico.svg" alt="" />
