@@ -54,3 +54,26 @@ body {
 .animate-fadeIn {
   animation: fadeIn 0.2s ease-out;
 }
+
+
+/* Spotify-like Scrollbar */
+::-webkit-scrollbar {
+  width: 3px; /* Slim scrollbar */
+  height: 3px; /* Horizontal scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: #121212; /* Dark background like Spotify */
+  border-radius: 10px; 
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1db95499; /* Spotify green */
+  border-radius: 10px;
+  transition: background 0.3s ease-in-out;
+}
+
+/* Scrollbar on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #1ed75f9b; /* Brighter green on hover */
+}
