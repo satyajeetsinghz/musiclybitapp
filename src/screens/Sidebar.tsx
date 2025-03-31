@@ -56,7 +56,7 @@ const Sidebar: React.FC<SidebarProps> = ({ favoriteAlbums, setFavoriteAlbums }) 
 
             {/* Artists and other section */}
             <div className="flex gap-2 mt-4">
-                <button className="bg-neutral-700 rounded-full text-center font-normal px-3 py-1.5 text-sm">Artists</button>
+                <button className="bg-neutral-700 rounded-full text-center font-normal px-3 py-1.5 text-sm">Liked Albums</button>
             </div>
 
             {/* Search and Recents section */}

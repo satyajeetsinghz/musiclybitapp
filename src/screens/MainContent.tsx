@@ -110,7 +110,7 @@ const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums, favoriteAl
 
             {/* Popup Notification */}
             {popupMessage && (
-                <div className="absolute top-3/4 md:bottom-[20px] left-1/2 transform -translate-x-1/2 bg-white text-black text-sm max-xs:text-xs max-xs:min-w-max lg:text-base font-semibold px-4 py-2 rounded-lg flex items-center gap-2 shadow-lg transition-opacity duration-500 z-50">
+                <div className="absolute max-xs:top-3/4  md:bottom-[20px] left-1/2 transform -translate-x-1/2 bg-white text-black text-sm max-xs:text-xs max-xs:min-w-max lg:text-base font-semibold px-4 py-2 rounded-lg flex items-center gap-2 shadow-lg transition-opacity duration-500 z-50">
                     {/* <CheckCircle className="text-green-400" size={20} /> */}
                     {popupMessage}
                 </div>
@@ -169,7 +169,20 @@ const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums, favoriteAl
                     <div className="px-6 pb-4 flex flex-col bg-cyan-00 overflow-y-auto h-[60%] md:h-[60%] lg:h-[55%]">
 
                         {/* Latest Songs List */}
-                        <h3 className="text-2xl font-bold mt-4 mb-2">Popular</h3>
+                        <div className="inline-flex items-center gap-3">
+                            <h3 className="text-2xl font-bold mt-4 mb-2">Popular</h3>
+                            {albums.map((album) => (
+                                <div>
+                                    <button onClick={(e) => { e.stopPropagation(); addFavoriteAlbum(album); }} className="max-md:text-[12px] transition p-1.5">
+                                        <div className="inline-flex items-center gap-2 mt-[18px]">
+                                        <img className="w-5 max-xs:w-4 transition" src="/assets/player ico/add-ico.svg" alt="" />
+                                        <p className="font-medium text-sm max-xs:text-xs">Add to Playlist</p>
+                                        </div>
+                                    </button>
+                                </div>
+                            ))}
+                        </div>
+                        
                         <div className="space-y-2 mt-3">
                             {/* Header Row */}
                             <div className="flex justify-between items-center w-full h-10 px-6 text-sm text-neutral-400 font-semibold border-b border-neutral-700">
@@ -298,11 +311,11 @@ const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums, favoriteAl
                                             <div key={album.id} onClick={() => handleAlbumClick(album)} className="w-full max-md:h-10 h-14 bg-neutral-800 hover:bg-neutral-700 rounded-md relative group cursor-pointer">
                                                 <div className="flex items-center">
                                                     <img className="size-14 max-md:size-10 object-center object-cover rounded-l-md" src={album.image} alt={album.name} />
-                                                    <h3 className="ml-2 max-md:text-[12px] font-bold text-white">{album.name}</h3>
+                                                    <h3 className="ml-2 max-md:text-[12px] md:text-[14px] lg:text-[16px] font-bold text-white">{album.name}</h3>
                                                 </div>
 
-                                                <button onClick={(e) => { e.stopPropagation(); addFavoriteAlbum(album); }} className="absolute max-md:bottom-[2px] bottom-[10px] max-md:right-[0px] right-[2px] max-md:text-[12px] opacity-0 group-hover:opacity-100 bg-reen-500 rounded-full hover:bg-reen-400 transition p-1.5">
-                                                    <img className="w-6 transition" src="/assets/player ico/add-ico.svg" alt="" />
+                                                <button onClick={(e) => { e.stopPropagation(); addFavoriteAlbum(album); }} className="max-xsm:hidden absolute max-md:bottom-[2px] bottom-[12px] max-md:right-[0px] right-[4px] max-md:text-[12px] opacity-0 group-hover:opacity-100 bg-reen-500 rounded-full hover:bg-wh transition p-1.5">
+                                                    <img className="w-5 transition" src="/assets/player ico/add-ico.svg" alt="" />
                                                 </button>
                                             </div>
                                         ))}
