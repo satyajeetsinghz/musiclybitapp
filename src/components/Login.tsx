@@ -17,9 +17,9 @@ const Login = () => {
         </div>
       ) : (
         <div className="flex items-center gap-3 max-xs:gap-1">
-          <p className="text-3xl max-xs:text-xs font-semibold">Welcome to</p>
-          <img src="assets/logo/musicly-text-white-logo.svg" className="w-48 max-xs:w-20" alt="" />
-          <p className="text-3xl max-xs:text-xs font-semibold">your <span className="w-full bg-green-400 py-1.5 px-2">personalized app.</span></p>
+          <p className="text-3xl max-xs:text-[14px] font-semibold">Welcome to</p>
+          <img src="assets/logo/musicly-text-white-logo.svg" className="w-20 md:w-48" alt="" />
+          <p className="text-3xl max-xs:text-[14px] font-semibold">your <span className="w-full bg-green-400 py-1.5 px-2">personalized app.</span></p>
         </div>
       )}
     </div>

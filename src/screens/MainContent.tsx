@@ -110,7 +110,7 @@ const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums, favoriteAl
 
             {/* Popup Notification */}
             {popupMessage && (
-                <div className="absolute max-xs:top-3/4  md:bottom-[20px] left-1/2 transform -translate-x-1/2 bg-white text-black text-sm max-xs:text-xs max-xs:min-w-max lg:text-base font-semibold px-4 py-2 rounded-lg flex items-center gap-2 shadow-lg transition-opacity duration-500 z-50">
+                <div className="absolute max-xs:top-2  md:bottom-[20px] left-1/2 transform -translate-x-1/2 bg-white text-black text-sm max-xs:text-xs max-xs:min-w-max lg:text-base font-semibold px-4 py-2 rounded-lg flex items-center gap-2 shadow-lg transition-opacity duration-500 z-50">
                     {/* <CheckCircle className="text-green-400" size={20} /> */}
                     {popupMessage}
                 </div>
@@ -154,7 +154,7 @@ const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums, favoriteAl
             {selectedAlbum ? (
                 <div className="bg-neutral-00 min-h-[100%] rounded-md flex flex-col h-full">
                     {/* Album Cover & Artist Info */}
-                    <div className="flex flex-col items-start gap-4 mb-0 relative h-[40%] md:h-[40%] lg:h-[45%]">
+                    <div className="flex flex-col items-start gap-4 mb-0 relative h-[25%] md:h-[40%] lg:h-[45%]">
                         {/* Back Button */}
                         <button onClick={handleBack} className="flex absolute top-[6px] left-[10px] items-center justify-center gap-2 rounded-full bg-neutral-950 hover:bg-neutral-800 text-gray-300 size-8">
                             <img className="w-[10px]" src="/assets/player ico/left-arrow.svg" alt="" />
@@ -166,23 +166,23 @@ const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums, favoriteAl
                             <p className="text-4xl max-md:text-2xl text-white font-extrabold">{selectedAlbum.artist}</p>
                         </div>
                     </div>
-                    <div className="px-6 pb-4 flex flex-col bg-cyan-00 overflow-y-auto h-[60%] md:h-[60%] lg:h-[55%]">
+                    <div className="px-6 pb-4 max-xs:px-2 max-xs:pb-2 flex flex-col bg-cyan-00 overflow-y-auto h-[60%] md:h-[60%] lg:h-[55%]">
 
                         {/* Latest Songs List */}
-                        <div className="inline-flex items-center gap-3">
-                            <h3 className="text-2xl font-bold mt-4 mb-2">Popular</h3>
+                        <div className="inline-flex items-center gap-1">
+                            <h3 className="text-2xl max-xs:text-xl font-bold mt-4 mb-2 pl-[6px]">Popular</h3>
                             {albums.map((album) => (
                                 <div>
                                     <button onClick={(e) => { e.stopPropagation(); addFavoriteAlbum(album); }} className="max-md:text-[12px] transition p-1.5">
                                         <div className="inline-flex items-center gap-2 mt-[18px]">
-                                        <img className="w-5 max-xs:w-4 transition" src="/assets/player ico/add-ico.svg" alt="" />
-                                        <p className="font-medium text-sm max-xs:text-xs">Add to Playlist</p>
+                                            <img className="w-5 max-xs:w-4 transition" src="/assets/player ico/add-ico.svg" alt="" />
+                                            {/* <p className="font-medium text-sm max-xs:text-xs"></p> */}
                                         </div>
                                     </button>
                                 </div>
                             ))}
                         </div>
-                        
+
                         <div className="space-y-2 mt-3">
                             {/* Header Row */}
                             <div className="flex justify-between items-center w-full h-10 px-6 text-sm text-neutral-400 font-semibold border-b border-neutral-700">
@@ -233,12 +233,12 @@ const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums, favoriteAl
 
                         {/* About artist  */}
                         <div className="mt-8 mb-2">
-                            <h2 className="text-2xl font-bold">About</h2>
-                            <div className="relative w-full h-[256px] lg:h-[345px] bg-red-00 mt-4 rounded-md overflow-hidden">
+                            <h2 className="text-2xl max-xs:text-xl font-bold pl-[6px]">About</h2>
+                            <div className="relative w-full h-[240px] lg:h-[345px] bg-red-00 mt-4 rounded-md overflow-hidden">
                                 <img className="w-full h-full object-cover object-center absolute opacity-70" src={selectedAlbum.aboutCover} alt="" />
                                 {/* Black shade */}
                                 <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black to-transparent opacity-90"></div>
-                                <div className="absolute bottom-[40px] left-0 w-[70%] lg:w-[50%] max-h-min ml-8 flex flex-col items-start space-y-0.5">
+                                <div className="absolute bottom-[12px] md:bottom-[20px] left-0 w-[80%] lg:w-full max-h-min ml-[10px] md:ml-[20px] flex flex-col items-start space-y-0.5">
                                     <h2 className="text-[11px] md:text-[16px] font-semibold">79,567,323,78 monthly listeners</h2>
                                     <h2 className="text-[11px] md:text-[16px] font-semibold">Ed Sheeran live concert this April, Summer Music Fest 2025 hits.</h2>
                                 </div>
@@ -314,7 +314,7 @@ const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums, favoriteAl
                                                     <h3 className="ml-2 max-md:text-[12px] md:text-[14px] lg:text-[16px] font-bold text-white">{album.name}</h3>
                                                 </div>
 
-                                                <button onClick={(e) => { e.stopPropagation(); addFavoriteAlbum(album); }} className="max-xsm:hidden absolute max-md:bottom-[2px] bottom-[12px] max-md:right-[0px] right-[4px] max-md:text-[12px] opacity-0 group-hover:opacity-100 bg-reen-500 rounded-full hover:bg-wh transition p-1.5">
+                                                <button onClick={(e) => { e.stopPropagation(); addFavoriteAlbum(album); }} className="hidden sm:block absolute max-md:bottom-[2px] bottom-[12px] max-md:right-[0px] right-[4px] max-md:text-[12px] opacity-0 group-hover:opacity-100 bg-reen-500 rounded-full hover:bg-wh transition p-1.5">
                                                     <img className="w-5 transition" src="/assets/player ico/add-ico.svg" alt="" />
                                                 </button>
                                             </div>

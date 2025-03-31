@@ -203,7 +203,7 @@ const SongRequest: React.FC<SongRequestProps> = ({ handleBack }) => {
                 <img className="w-[10px]" src="/assets/player ico/left-arrow.svg" alt="" />
             </button>
 
-            <h2 className="text-[24px] max-xs:text-[14px] font-bold text-center mt-3">Every request tunes our library to perfection make your mark shape the music</h2>
+            <h2 className="max-xs:text-[14px] md:text-[16px] lg:text-[24px] font-bold text-center mt-3">Every request tunes our library to perfection make your mark shape the music</h2>
 
             {/* 🎵 Search for Songs */}
             <div className="mt-12 flex justify-between items-center gap-2 p-1">
