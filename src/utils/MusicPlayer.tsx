@@ -102,7 +102,7 @@ const MusicPlayer = () => {
                     {/* Album Cover and Metadata  */}
                     <div className="w-[60%] sm:w-[30%] h-20 py-[8px] px-[2px] md:px-[8px] bg-ed-300 flex cursor-pointer">
                         <div className="w-[60px] h-[60px] max-xs:w-[50px] max-xs:h-[50px] max-xs:mt-[6px] rounded-md overflow-hidden">
-                            <img className="w-full h-full object-cover object-center" src={currentSong?.image || "https://img.freepik.com/premium-psd/cyberpunk-music-borderline-design-neon-lines-style-vinyl-rec-shape-y2k-neon-light-art-collections_1020495-210611.jpg"} alt="" />
+                            <img className="w-full h-full object-cover object-center" src={currentSong?.image || "https://images.template.net/90836/spotify-album-cover-template-m19i3.jpeg"} alt="" />
                         </div>
 
                         <div className="flex flex-col justify-center pl-3">

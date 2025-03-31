@@ -90,7 +90,7 @@ const Navbar = () => {
             ) : (
                 <button
                     onClick={signInWithGoogle}
-                    className="xl:hidden text-[12px] text-white hover:text-black hover:bg-white uppercase font-bold w-20 py-1 bg-transparent border border-white transition">
+                    className="xl:hidden text-[12px] text-white hover:text-black hover:bg-white uppercase font-bold w-20 py-1 bg-transparent border border-white transition rounded-full">
                     Sign In
                 </button>
             )}

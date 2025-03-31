@@ -288,15 +288,17 @@ const SongRequest: React.FC<SongRequestProps> = ({ handleBack }) => {
                         {requests.length > 0 ? (
                             requests.map((song) => (
                                 <li key={song.id} className="flex justify-between items-center p-2.5 mb-1 border-b-[1px] border-b-green-400 hover:bg-neutral-700 rounded-md">
-                                    <div className="flex items-center gap-3">
+                                    <div className="flex items-center gap-3 w-full">
                                         {/* 🎵 Album Cover */}
                                         <img
                                             src={song.imageUrl}  // ✅ Fix: Use imageUrl from Firestore
                                             alt={song.title}
-                                            className="w-12 h-12 object-cover rounded-md"
+                                            className="w-12 h-12 object-cover rounded-md flex shrink-0"
                                         />
-                                        <div>
-                                            <p className="font-bold max-xs:text-xs">{song.title} - {song.artist}</p>
+                                        <div className="min-w-0 flex-grow">
+                                            <p className="font-bold max-xs:text-xs max-xsm:max-w-[160px] max-xs:max-w-[200px] md:max-w-[260px] lg:max-w-min text-white truncate">
+                                                {song.title} - {song.artist}
+                                            </p>
 
                                             {/* 🎭 Profile Picture Group (Hover to Show List) */}
                                             <div className="relative flex items-center -space-x-1 flex-wrap group cursor-pointer">
@@ -343,21 +345,20 @@ const SongRequest: React.FC<SongRequestProps> = ({ handleBack }) => {
 
 
                                     </div>
-                                    <div className="flex gap-3 text-sm font-semibold">
+                                    <div className="flex gap-3 text-sm font-semibold min-w-[90px] justify-end">
                                         {/* 👍 Upvote Button */}
-                                        <button onClick={() => handleUpvote(song.id, song.upvotes)}>
-                                            <div className="inline-flex items-center gap-2">
-                                                <img src="/assets/player ico/like-ico.svg" alt="" /> {song.upvotes.length}
-                                            </div>
+                                        <button className="inline-flex items-center gap-1" onClick={() => handleUpvote(song.id, song.upvotes)}>
+                                                <img className="max-xs:w-4" src="/assets/player ico/like-ico.svg" alt="" />
+                                                <span className="text-white">{song.upvotes.length}</span>
                                         </button>
 
                                         {/* 🗑️ Delete Button (Only if User Requested the Song) */}
                                         {song.requestedByUsers.some(user => user.uid === auth.currentUser?.uid) && (
                                             <button
                                                 onClick={() => handleDelete(song.id)}
-                                                className="text-white mt-3"
+                                                className="text-white max-xs:mt-3 mt-3.5"
                                             >
-                                                <img className="w-8" src="/remove-ico-1.svg" alt="Delete" />
+                                                <img className="w-8 max-xs:w-6" src="/remove-ico-1.svg" alt="Delete" />
                                             </button>
                                         )}
                                     </div>
