@@ -27,9 +27,15 @@ const Navbar = () => {
         <div className="flex justify-between items-center w-full h-14 fixed top-0 bg-neutral-950 text-white px-4 z-50 shadow-md">
             {/* Logo */}
             <div>
-                {/* <img className="w-52" src="/assets/logo/musiclybit_logo.png" alt="" /> */}
-                <img className="w-32 hidden md:block" src="assets/logo/musicly-text-white-logo.svg" alt="" />
-                <img className="w-16 md:hidden" src="/assets/logo/mb-text-white-logo.svg" alt="" />
+
+                {/* <img className="w-32 hidden md:block" src="assets/logo/musicly-text-white-logo.svg" alt="" /> */}
+                {/* Beta Version Logo Larger  */}
+                <img className="w-32 hidden md:block" src="assets/logo/musiclybeta-text-white-logo.svg" alt="" />
+
+                {/* <img className="w-16 md:hidden" src="/assets/logo/mb-text-white-logo.svg" alt="" /> */}
+                {/* Beta Version Logo Mobile  */}
+                <img className="w-16 md:hidden" src="/assets/logo/musicly_BETA-text-white-logo.svg" alt="" />
+
             </div>
 
             {/* Login Button (Shown if user is not logged in) */}
