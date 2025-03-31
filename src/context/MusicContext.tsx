@@ -4,6 +4,7 @@ interface Song {
     id: string;
     title: string;
     artist?: string;
+    album?: string;
     image?: string;
     audio: string;
 }

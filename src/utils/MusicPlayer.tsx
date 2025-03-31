@@ -30,6 +30,23 @@ const MusicPlayer = () => {
             if (isPlaying) {
                 audioRef.current.play().catch((err) => console.error("Playback error:", err));
             }
+
+            // Check if Media Session API is available
+            if ("mediaSession" in navigator) {
+                navigator.mediaSession.metadata = new MediaMetadata({
+                    title: currentSong?.title || "Unknown Title",
+                    artist: currentSong?.artist || "Unknown Artist",
+                    album: currentSong?.album || "Unknown Album",  // ✅ Fix: Provide default value
+                    artwork: [
+                        {
+                            src: currentSong?.image || "https://example.com/default-album.png",  // ✅ Fix: Provide default album cover
+                            sizes: "512x512",
+                            type: "image/png"
+                        }
+                    ]
+                });
+            }
+
         }
     }, [currentSong]);
 
