@@ -62,18 +62,25 @@ body {
   height: 3px; /* Horizontal scrollbar */
 }
 
+/* Scrollbar Track */
 ::-webkit-scrollbar-track {
-  background: #121212; /* Dark background like Spotify */
-  border-radius: 10px; 
+  background: transparent; /* Fully transparent when idle */
+  border-radius: 10px;
 }
 
+/* Scrollbar Thumb (Hidden by Default) */
 ::-webkit-scrollbar-thumb {
-  background: #1db95499; /* Spotify green */
+  background: transparent; /* Invisible when not scrolling */
   border-radius: 10px;
   transition: background 0.3s ease-in-out;
 }
 
-/* Scrollbar on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: #1ed75f9b; /* Brighter green on hover */
+/* Scrollbar on Hover/Scrolling */
+*::-webkit-scrollbar-thumb {
+  background: #1db95499; /* Spotify green */
 }
+
+*::-webkit-scrollbar-thumb:focus {
+  background: #1ed75f9b; /* Brighter green */
+}
+
