@@ -170,7 +170,7 @@ const MusicPlayer = () => {
                             >
                                 {/* Seekbar Progress */}
                                 <div
-                                    className="absolute top-0 left-0 h-full bg-cyan-400 rounded-full transition-all duration-100"
+                                    className="absolute top-0 left-0 h-full bg-[#1ed75f] rounded-full transition-all duration-100"
                                     style={{ width: `${(currentTime / duration) * 100}%` }}
                                 />
 
@@ -217,7 +217,7 @@ const MusicPlayer = () => {
                                 >
                                     {/* Volume Level */}
                                     <div
-                                        className="absolute top-0 left-0 h-full bg-cyan-400 rounded-full transition-all duration-100"
+                                        className="absolute top-0 left-0 h-full bg-[#1ed75f] rounded-full transition-all duration-100"
                                         style={{ width: `${volume * 100}%` }}
                                     />
 
