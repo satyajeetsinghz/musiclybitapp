@@ -172,16 +172,19 @@ const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums, favoriteAl
                         <div className="inline-flex items-center gap-1">
                             <h3 className="text-2xl max-xs:text-xl font-bold mt-4 mb-2 pl-[6px]">Popular</h3>
                             {albums.map((album) => (
-                                <div>
-                                    <button onClick={(e) => { e.stopPropagation(); addFavoriteAlbum(album); }} className="max-md:text-[12px] transition p-1.5">
+                                <div key={album.id}> {/* ✅ Add unique key here */}
+                                    <button
+                                        onClick={(e) => { e.stopPropagation(); addFavoriteAlbum(album); }}
+                                        className="max-md:text-[12px] transition p-1.5"
+                                    >
                                         <div className="inline-flex items-center gap-2 mt-[18px]">
                                             <img className="w-5 max-xs:w-4 transition" src="/assets/player ico/add-ico.svg" alt="" />
-                                            {/* <p className="font-medium text-sm max-xs:text-xs"></p> */}
                                         </div>
                                     </button>
                                 </div>
                             ))}
                         </div>
+
 
                         <div className="space-y-2 mt-3">
                             {/* Header Row */}

@@ -8,14 +8,41 @@ const MusicPlayer = () => {
     const audioRef = useRef(new Audio());
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);
-    const [currentIndex, setCurrentIndex] = useState(0);
+    const [currentAlbumIndex, setCurrentAlbumIndex] = useState(0);
+    const [currentSongIndex, setCurrentSongIndex] = useState(0);
     const [volume, setVolume] = useState(1);
     const [isMuted, setIsMuted] = useState(false);
 
-    // Load and Play Selected Song
+    // Retrieve last played song from localStorage when component mounts
+    useEffect(() => {
+        const savedData = localStorage.getItem("lastPlayedSong");
+        if (savedData) {
+            const parsedData = JSON.parse(savedData);
+            setCurrentAlbumIndex(parsedData.albumIndex);
+            setCurrentSongIndex(parsedData.songIndex);
+            setCurrentSong(parsedData.song);
+            setIsPlaying(parsedData.isPlaying);
+        }
+    }, []);  // This runs only once when the component mounts
+
+    // Save current song state to localStorage whenever it changes
     useEffect(() => {
         if (currentSong) {
-            audioRef.current.pause();
+            localStorage.setItem(
+                "lastPlayedSong",
+                JSON.stringify({
+                    albumIndex: currentAlbumIndex,
+                    songIndex: currentSongIndex,
+                    song: currentSong,
+                    isPlaying
+                })
+            );
+        }
+    }, [currentSong, currentAlbumIndex, currentSongIndex, isPlaying]);
+
+    // Initialize audio element when the song changes
+    useEffect(() => {
+        if (currentSong) {
             audioRef.current.src = currentSong.audio;
             audioRef.current.load();
 
@@ -27,79 +54,72 @@ const MusicPlayer = () => {
                 setCurrentTime(audioRef.current.currentTime);
             };
 
+            // If the song is set to play, start playing it immediately
             if (isPlaying) {
                 audioRef.current.play().catch((err) => console.error("Playback error:", err));
             }
-
-            // Check if Media Session API is available
-            if ("mediaSession" in navigator) {
-                navigator.mediaSession.metadata = new MediaMetadata({
-                    title: currentSong?.title || "Unknown Title",
-                    artist: currentSong?.artist || "Unknown Artist",
-                    album: currentSong?.album || "Unknown Album",  // ✅ Fix: Provide default value
-                    artwork: [
-                        {
-                            src: currentSong?.image || "https://example.com/default-album.png",  // ✅ Fix: Provide default album cover
-                            sizes: "512x512",
-                            type: "image/png"
-                        }
-                    ]
-                });
-            }
-
         }
-    }, [currentSong]);
+    }, [currentSong]); // Run only when currentSong changes
 
-    // Play/Pause functionality
+    // Handle play/pause toggle
     const handlePlayPause = () => {
         if (isPlaying) {
-            audioRef.current.pause();
+            audioRef.current.pause(); // Pause the audio
         } else {
-            audioRef.current.play();
+            // If paused, set currentTime to the last known value and play
+            audioRef.current.currentTime = currentTime;
+            audioRef.current.play().catch((err) => console.error("Playback error:", err));
         }
-        setIsPlaying(!isPlaying);
+        setIsPlaying(!isPlaying); // Toggle playing state
     };
 
-    // ✅ Seekbar functionality (Properly Used)
-    // const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
-    //     const newTime = parseFloat(e.target.value);
-    //     audioRef.current.currentTime = newTime;
-    //     setCurrentTime(newTime);
-    // };
-
-    // ✅ Next Song (Select First Song from Next Album)
+    // Handle next song
     const handleNext = () => {
-        const newIndex = (currentIndex + 1) % albums.length;
-        setCurrentIndex(newIndex);
+        if (!albums.length) return;
 
-        // Pick the first song from the next album
-        const nextSong = albums[newIndex].songs[0];
+        let newSongIndex = currentSongIndex + 1;
+        let newAlbumIndex = currentAlbumIndex;
+
+        if (newSongIndex >= albums[newAlbumIndex].songs.length) {
+            newAlbumIndex = (newAlbumIndex + 1) % albums.length;
+            newSongIndex = 0;
+        }
+
+        const nextSong = albums[newAlbumIndex]?.songs[newSongIndex];
+
         if (nextSong) {
+            setCurrentAlbumIndex(newAlbumIndex);
+            setCurrentSongIndex(newSongIndex);
             setCurrentSong(nextSong);
             setIsPlaying(true);
+        } else {
+            setIsPlaying(false);
         }
     };
 
-    // ✅ Previous Song (Select First Song from Previous Album)
+    // Handle previous song
     const handlePrev = () => {
-        const newIndex = (currentIndex - 1 + albums.length) % albums.length;
-        setCurrentIndex(newIndex);
+        if (!albums.length) return;
 
-        // Pick the first song from the previous album
-        const prevSong = albums[newIndex].songs[0];
+        let newSongIndex = currentSongIndex - 1;
+        let newAlbumIndex = currentAlbumIndex;
+
+        if (newSongIndex < 0) {
+            newAlbumIndex = (newAlbumIndex - 1 + albums.length) % albums.length;
+            newSongIndex = albums[newAlbumIndex].songs.length - 1;
+        }
+
+        const prevSong = albums[newAlbumIndex]?.songs[newSongIndex];
+
         if (prevSong) {
+            setCurrentAlbumIndex(newAlbumIndex);
+            setCurrentSongIndex(newSongIndex);
             setCurrentSong(prevSong);
             setIsPlaying(true);
+        } else {
+            setIsPlaying(false);
         }
     };
-
-    // ✅ Volume Control (Properly Used)
-    // const handleVolumeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    //     const newVolume = parseFloat(e.target.value);
-    //     setVolume(newVolume);
-    //     audioRef.current.volume = newVolume;
-    //     setIsMuted(newVolume === 0);
-    // };
 
     // Toggle Mute/Unmute
     const toggleMute = () => {
@@ -107,8 +127,14 @@ const MusicPlayer = () => {
         audioRef.current.muted = !isMuted;
     };
 
-    const handleSongEnd = () => {
-        setIsPlaying(false); // Set to play state when the song ends
+    // Handle seekbar click
+    const handleSeekbarClick = (e: React.MouseEvent<HTMLDivElement>) => {
+        const rect = e.currentTarget.getBoundingClientRect();
+        const clickPosition = (e.clientX - rect.left) / rect.width;
+        const newTime = clickPosition * duration;
+
+        audioRef.current.currentTime = newTime; // Update audioRef currentTime
+        setCurrentTime(newTime); // Update the state as well
     };
 
 
@@ -118,7 +144,7 @@ const MusicPlayer = () => {
                 <div className="w-full h-16 md:h-20 bg-neutral-800/90 md:bg-neutral-950 flex justify-between items-center px-2 py-1 rounded-md md:rounded-none">
 
                     {/* Hidden Audio Element */}
-                    <audio ref={audioRef} onEnded={handleSongEnd} controls hidden />
+                    <audio ref={audioRef} onEnded={handleNext} controls hidden />
 
                     {/* Album Cover and Metadata  */}
                     <div className="w-[60%] sm:w-[30%] h-20 py-[8px] px-[2px] md:px-[8px] bg-ed-300 flex cursor-pointer">
@@ -160,13 +186,7 @@ const MusicPlayer = () => {
                             {/* Seekbar Container */}
                             <div
                                 className="relative flex-1 h-1 bg-neutral-600 rounded-full cursor-pointer"
-                                onClick={(e) => {
-                                    const rect = e.currentTarget.getBoundingClientRect();
-                                    const clickPosition = (e.clientX - rect.left) / rect.width;
-                                    const newTime = clickPosition * duration;
-                                    audioRef.current.currentTime = newTime;
-                                    setCurrentTime(newTime);
-                                }}
+                                onClick={handleSeekbarClick}
                             >
                                 {/* Seekbar Progress */}
                                 <div
