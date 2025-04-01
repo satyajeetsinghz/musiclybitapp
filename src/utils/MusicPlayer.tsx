@@ -13,7 +13,7 @@ const MusicPlayer = () => {
     const [volume, setVolume] = useState(1);
     const [isMuted, setIsMuted] = useState(false);
 
-    // Retrieve last played song from localStorage when component mounts
+    // Retrieve last played song from localStorage
     useEffect(() => {
         const savedData = localStorage.getItem("lastPlayedSong");
         if (savedData) {
@@ -23,9 +23,9 @@ const MusicPlayer = () => {
             setCurrentSong(parsedData.song);
             setIsPlaying(parsedData.isPlaying);
         }
-    }, []);  // This runs only once when the component mounts
+    }, []);
 
-    // Save current song state to localStorage whenever it changes
+    // Save current song state to localStorage
     useEffect(() => {
         if (currentSong) {
             localStorage.setItem(
@@ -40,37 +40,52 @@ const MusicPlayer = () => {
         }
     }, [currentSong, currentAlbumIndex, currentSongIndex, isPlaying]);
 
-    // Initialize audio element when the song changes
+    // Initialize audio when song changes
     useEffect(() => {
-        if (currentSong) {
-            audioRef.current.src = currentSong.audio;
-            audioRef.current.load();
+        if (!currentSong) return;
 
-            audioRef.current.onloadedmetadata = () => {
-                setDuration(audioRef.current.duration);
-            };
+        audioRef.current.src = currentSong.audio;
+        audioRef.current.load();
 
-            audioRef.current.ontimeupdate = () => {
-                setCurrentTime(audioRef.current.currentTime);
-            };
+        audioRef.current.onloadedmetadata = () => setDuration(audioRef.current.duration);
+        audioRef.current.ontimeupdate = () => setCurrentTime(audioRef.current.currentTime);
 
-            // If the song is set to play, start playing it immediately
-            if (isPlaying) {
-                audioRef.current.play().catch((err) => console.error("Playback error:", err));
-            }
+        if (isPlaying) {
+            audioRef.current.play().catch(err => console.error("Playback error:", err));
         }
-    }, [currentSong]); // Run only when currentSong changes
+
+        // Update Media Session API for Mobile & Laptop Notifications
+        if ("mediaSession" in navigator) {
+            navigator.mediaSession.metadata = new MediaMetadata({
+                title: currentSong.title,
+                artist: currentSong.artist || "Unknown Artist",
+                album: currentSong.album || "Unknown Album",
+                artwork: [{ src: currentSong.image || "/default-cover.jpg", sizes: "512x512", type: "image/jpeg" },]
+            });
+
+            navigator.mediaSession.setActionHandler("play", handlePlayPause);
+            navigator.mediaSession.setActionHandler("pause", handlePlayPause);
+            navigator.mediaSession.setActionHandler("nexttrack", handleNext);
+            navigator.mediaSession.setActionHandler("previoustrack", handlePrev);
+        }
+
+        return () => {
+            // Cleanup event listeners when unmounting
+            audioRef.current.onloadedmetadata = null;
+            audioRef.current.ontimeupdate = null;
+        };
+    }, [currentSong]);
 
     // Handle play/pause toggle
     const handlePlayPause = () => {
+        if (!currentSong) return;
+
         if (isPlaying) {
-            audioRef.current.pause(); // Pause the audio
+            audioRef.current.pause();
         } else {
-            // If paused, set currentTime to the last known value and play
-            audioRef.current.currentTime = currentTime;
-            audioRef.current.play().catch((err) => console.error("Playback error:", err));
+            audioRef.current.play().catch(err => console.error("Playback error:", err));
         }
-        setIsPlaying(!isPlaying); // Toggle playing state
+        setIsPlaying(!isPlaying);
     };
 
     // Handle next song
@@ -86,14 +101,11 @@ const MusicPlayer = () => {
         }
 
         const nextSong = albums[newAlbumIndex]?.songs[newSongIndex];
-
         if (nextSong) {
             setCurrentAlbumIndex(newAlbumIndex);
             setCurrentSongIndex(newSongIndex);
             setCurrentSong(nextSong);
             setIsPlaying(true);
-        } else {
-            setIsPlaying(false);
         }
     };
 
@@ -110,14 +122,11 @@ const MusicPlayer = () => {
         }
 
         const prevSong = albums[newAlbumIndex]?.songs[newSongIndex];
-
         if (prevSong) {
             setCurrentAlbumIndex(newAlbumIndex);
             setCurrentSongIndex(newSongIndex);
             setCurrentSong(prevSong);
             setIsPlaying(true);
-        } else {
-            setIsPlaying(false);
         }
     };
 

@@ -203,7 +203,7 @@ const SongRequest: React.FC<SongRequestProps> = ({ handleBack }) => {
                 <img className="w-[10px]" src="/assets/player ico/left-arrow.svg" alt="" />
             </button>
 
-            <h2 className="max-xs:text-[14px] md:text-[16px] lg:text-[24px] font-bold text-center mt-3 text-neutral-100">Every <span className="bg-green-400 px-2 py-0.5 sm:py-1">requests</span> tunes our library to perfection make your mark <span className="bg-green-400 px-2 py-0.5 sm:py-1">shape the music</span>.</h2>
+            <h2 className="max-xs:text-[14px] md:text-[16px] lg:text-[24px] font-bold text-center mt-3 text-neutral-100">Every <span className="bg-green-400 px-1 sm:px-2 py-0.5 sm:py-1">requests</span> tunes our library to perfection make your mark <span className="bg-green-400 px-1 sm:px-2 py-0.5 sm:py-1">shape the music.</span></h2>
 
             {/* 🎵 Search for Songs */}
             <div className="mt-12 flex justify-between items-center gap-2 p-1">
@@ -243,7 +243,7 @@ const SongRequest: React.FC<SongRequestProps> = ({ handleBack }) => {
 
             {/* 📌 Display Spotify Search Results */}
             {searchResults.length > 0 ? (
-                <ul className="bg-neutral-00 px-4 py-2.5 max-xs:px-1 max-xs:py-1 rounded h-[375px] max-xs:h-[420px] flex flex-col overflow-y-auto">
+                <ul className="bg-neutral-00 px-4 py-2.5 max-xs:px-1 max-xs:py-1 rounded sm:h-[375px] h-[280px] max-xs:h-[420px] flex flex-col overflow-y-auto">
                     <div className="flex justify-start items-center px-2 py-4">
                         <h3 className="text-xl font-extrabold text-green-400">Select a Song to Request</h3>
                         {/* ❌ Cancel Button */}
