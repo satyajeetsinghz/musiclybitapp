@@ -84,6 +84,17 @@ const MusicPlayer = () => {
             }
         };
 
+        // 🔥 Chrome Bug Fix: Force Seekbar Update Every Second
+        const chromeSeekbarFix = setInterval(() => {
+            if ("mediaSession" in navigator && !audioRef.current.paused) {
+                navigator.mediaSession.setPositionState({
+                    duration: audioRef.current.duration || 0,
+                    playbackRate: audioRef.current.playbackRate,
+                    position: audioRef.current.currentTime
+                });
+            }
+        }, 1000);
+
         // Make sure to only play when `isPlaying` is true
         if (isPlaying) {
             audioRef.current.play().catch(err => {
@@ -146,7 +157,8 @@ const MusicPlayer = () => {
         }
 
         return () => {
-            // Cleanup event listeners
+            // Cleanup event listeners & Chrome fix interval
+            clearInterval(chromeSeekbarFix);
             audioRef.current.onloadedmetadata = null;
             audioRef.current.ontimeupdate = null;
         };
