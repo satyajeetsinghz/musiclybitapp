@@ -296,7 +296,7 @@ const SongRequest: React.FC<SongRequestProps> = ({ handleBack }) => {
                                             className="w-12 h-12 object-cover rounded-md flex shrink-0"
                                         />
                                         <div className="min-w-0 flex-grow">
-                                            <p className="font-bold max-xs:text-xs max-xsm:max-w-[160px] max-xs:max-w-[200px] md:max-w-[260px] lg:max-w-min text-white truncate">
+                                            <p className="font-bold max-xs:text-xs max-xsm:max-w-[160px] max-xs:max-w-[200px] max-w-[245px] md:max-w-[260px] lg:max-w-min text-white truncate">
                                                 {song.title} - {song.artist}
                                             </p>
 
