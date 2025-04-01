@@ -48,33 +48,70 @@ const MusicPlayer = () => {
         audioRef.current.load();
 
         audioRef.current.onloadedmetadata = () => setDuration(audioRef.current.duration);
-        audioRef.current.ontimeupdate = () => setCurrentTime(audioRef.current.currentTime);
+        audioRef.current.ontimeupdate = () => {
+            setCurrentTime(audioRef.current.currentTime);
+
+            // ✅ Update Media Session positionState to sync seekbar
+            if ("mediaSession" in navigator) {
+                navigator.mediaSession.setPositionState({
+                    duration: audioRef.current.duration || 0,
+                    playbackRate: audioRef.current.playbackRate,
+                    position: audioRef.current.currentTime
+                });
+            }
+        };
 
         if (isPlaying) {
             audioRef.current.play().catch(err => console.error("Playback error:", err));
         }
 
-        // Update Media Session API for Mobile & Laptop Notifications
-        if ("mediaSession" in navigator) {
-            navigator.mediaSession.metadata = new MediaMetadata({
-                title: currentSong.title,
-                artist: currentSong.artist || "Unknown Artist",
-                album: currentSong.album || "Unknown Album",
-                artwork: [{ src: currentSong.image || "/default-cover.jpg", sizes: "512x512", type: "image/jpeg" },]
-            });
+        // ✅ Add seek event listeners
+    if ("mediaSession" in navigator) {
+        navigator.mediaSession.metadata = new MediaMetadata({
+            title: currentSong.title,
+            artist: currentSong.artist || "Unknown Artist",
+            album: currentSong.album || "Unknown Album",
+            artwork: [{ src: currentSong.image || "/default-cover.jpg", sizes: "512x512", type: "image/jpeg" }]
+        });
 
+        try {
             navigator.mediaSession.setActionHandler("play", handlePlayPause);
             navigator.mediaSession.setActionHandler("pause", handlePlayPause);
             navigator.mediaSession.setActionHandler("nexttrack", handleNext);
             navigator.mediaSession.setActionHandler("previoustrack", handlePrev);
-        }
 
-        return () => {
-            // Cleanup event listeners when unmounting
-            audioRef.current.onloadedmetadata = null;
-            audioRef.current.ontimeupdate = null;
-        };
-    }, [currentSong]);
+            // ✅ Handle seek events
+            navigator.mediaSession.setActionHandler("seekto", (event) => {
+                if (event.seekTime !== undefined) {
+                    audioRef.current.currentTime = event.seekTime;
+                    setCurrentTime(event.seekTime);
+                }
+            });
+
+            navigator.mediaSession.setActionHandler("seekbackward", (event) => {
+                const seekOffset = event.seekOffset || 10; // Default 10 seconds
+                audioRef.current.currentTime = Math.max(0, audioRef.current.currentTime - seekOffset);
+                setCurrentTime(audioRef.current.currentTime);
+            });
+
+            navigator.mediaSession.setActionHandler("seekforward", (event) => {
+                const seekOffset = event.seekOffset || 10;
+                audioRef.current.currentTime = Math.min(duration, audioRef.current.currentTime + seekOffset);
+                setCurrentTime(audioRef.current.currentTime);
+            });
+
+        } catch (error) {
+            console.warn("Media Session API action handlers not supported:", error);
+        }
+    }
+
+    return () => {
+        // Cleanup event listeners
+        audioRef.current.onloadedmetadata = null;
+        audioRef.current.ontimeupdate = null;
+    };
+}, [currentSong]);
+
 
     // Handle play/pause toggle
     const handlePlayPause = () => {
