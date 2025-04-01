@@ -181,18 +181,28 @@ const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums, favoriteAl
                     <div className="px-6 pb-4 max-xs:px-2 max-xs:pb-2 flex flex-col bg-cyan-00 overflow-y-auto h-[60%] md:h-[60%] lg:h-[55%]">
 
                         {/* Latest Songs List */}
-                        <div className="inline-flex items-center gap-1">
+                        <div className="inline-flex items-center gap-2">
                             <h3 className="text-2xl max-xs:text-xl font-bold mt-4 mb-2 pl-[6px]">Popular</h3>
                             {albums.map((album) => (
                                 <div key={album.id}> {/* ✅ Add unique key here */}
-                                    <button
-                                        onClick={(e) => { e.stopPropagation(); addFavoriteAlbum(album); }}
-                                        className="max-md:text-[12px] transition p-1.5"
-                                    >
-                                        <div className="inline-flex items-center gap-2 mt-[18px]">
-                                            <img className="w-5 max-xs:w-4 transition" src="/assets/player ico/add-ico.svg" alt="" />
-                                        </div>
-                                    </button>
+                                    <div className="inline-flex items-center gap-2">
+                                        <button
+                                            onClick={(e) => { e.stopPropagation(); addFavoriteAlbum(album); }}
+                                            className="max-md:text-[12px] transition p-1.5"
+                                        >
+                                            <div className="inline-flex items-center gap-2 mt-[18px]">
+                                                <img className="w-5 max-xs:w-5 transition" src="/assets/player ico/add-ico.svg" alt="" />
+                                            </div>
+                                        </button>
+
+                                        {/* // Updated Play button in the JSX for each album */}
+                                        <button
+                                            onClick={(e) => handlePlayAlbum(album, e)}  // Pass the event to the handler
+                                            className="bg-green-500 rounded-full hover:bg-green-400 transition p-[4px] mt-[10px] max-xs:mt-[12px]"
+                                        >
+                                            <Play className="w-[16px] h-[16px] text-black" fill="black" />
+                                        </button>
+                                    </div>
                                 </div>
                             ))}
                         </div>
@@ -325,21 +335,33 @@ const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums, favoriteAl
                                         {albums.map((album) => (
                                             <div key={album.id} onClick={() => handleAlbumClick(album)} className="w-full max-md:h-10 h-14 bg-neutral-800 hover:bg-neutral-700 rounded-md relative group cursor-pointer">
                                                 <div className="flex items-center">
-                                                    <img className="size-14 max-md:size-10 object-center object-cover rounded-l-md" src={album.image} alt={album.name} />
-                                                    <h3 className="ml-2 max-md:text-[12px] md:text-[14px] lg:text-[16px] font-bold text-white">{album.name}</h3>
+                                                    <img
+                                                        className="size-14 max-md:size-10 object-center object-cover rounded-l-md"
+                                                        src={album.image}
+                                                        alt={album.name}
+                                                    />
+                                                    <h3
+                                                        className="ml-2 max-md:text-[12px] md:text-[14px] lg:text-[16px] font-bold text-white truncate md:w-[calc(75%-50px)] lg:w-[200px]"
+                                                    >
+                                                        {album.name}
+                                                    </h3>
+
+                                                    <button
+                                                        onClick={(e) => handlePlayAlbum(album, e)}  // Pass the event to the handler
+                                                        className="hidden sm:block absolute max-md:bottom-[2px] bottom-[12px] max-md:right-[0px] right-[6px] max-md:text-[12px] opacity-0 group-hover:opacity-100 bg-green-500 rounded-full hover:bg-green-400 transition p-1.5"
+                                                    >
+                                                        <Play className="w-5 h-5 text-black" fill="black" />
+                                                    </button>
+
                                                 </div>
+
 
                                                 {/* <button onClick={(e) => { e.stopPropagation(); addFavoriteAlbum(album); }} className="hidden sm:block absolute max-md:bottom-[2px] bottom-[12px] max-md:right-[0px] right-[4px] max-md:text-[12px] opacity-0 group-hover:opacity-100 bg-reen-500 rounded-full hover:bg-wh transition p-1.5">
                                                     <img className="w-5 transition" src="/assets/player ico/add-ico.svg" alt="" />
                                                 </button> */}
 
                                                 {/* // Updated Play button in the JSX for each album */}
-                                                <button
-                                                    onClick={(e) => handlePlayAlbum(album, e)}  // Pass the event to the handler
-                                                    className="hidden sm:block absolute max-md:bottom-[2px] bottom-[12px] max-md:right-[0px] right-[6px] max-md:text-[12px] opacity-0 group-hover:opacity-100 bg-green-500 rounded-full hover:bg-green-400 transition p-1.5"
-                                                >   
-                                                    <Play className="w-5 h-5 text-black" fill="black" />
-                                                </button>
+
                                             </div>
                                         ))}
                                     </div>
