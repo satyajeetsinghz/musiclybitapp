@@ -102,7 +102,19 @@ const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums, favoriteAl
         setTimeout(() => setPopupMessage(""), 3000);
     };
 
+    // Updated `handlePlaySong` to play the entire album
+    const handlePlayAlbum = (album: Album, e: React.MouseEvent) => {
+        e.stopPropagation();  // Stop propagation to parent elements
+        // Check if album has songs
+        if (!album.songs || album.songs.length === 0) return;
 
+        // Set the first song as the current song
+        setCurrentSong?.(album.songs[0]);
+        setIsPlaying?.(true);
+
+        // Optionally, you can also store the album's songs in a queue for sequential play
+        music.setQueue?.(album.songs); // Assuming `setQueue` is part of your music context
+    };
 
 
     return (
@@ -317,8 +329,16 @@ const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums, favoriteAl
                                                     <h3 className="ml-2 max-md:text-[12px] md:text-[14px] lg:text-[16px] font-bold text-white">{album.name}</h3>
                                                 </div>
 
-                                                <button onClick={(e) => { e.stopPropagation(); addFavoriteAlbum(album); }} className="hidden sm:block absolute max-md:bottom-[2px] bottom-[12px] max-md:right-[0px] right-[4px] max-md:text-[12px] opacity-0 group-hover:opacity-100 bg-reen-500 rounded-full hover:bg-wh transition p-1.5">
+                                                {/* <button onClick={(e) => { e.stopPropagation(); addFavoriteAlbum(album); }} className="hidden sm:block absolute max-md:bottom-[2px] bottom-[12px] max-md:right-[0px] right-[4px] max-md:text-[12px] opacity-0 group-hover:opacity-100 bg-reen-500 rounded-full hover:bg-wh transition p-1.5">
                                                     <img className="w-5 transition" src="/assets/player ico/add-ico.svg" alt="" />
+                                                </button> */}
+
+                                                {/* // Updated Play button in the JSX for each album */}
+                                                <button
+                                                    onClick={(e) => handlePlayAlbum(album, e)}  // Pass the event to the handler
+                                                    className="hidden sm:block absolute max-md:bottom-[2px] bottom-[12px] max-md:right-[0px] right-[6px] max-md:text-[12px] opacity-0 group-hover:opacity-100 bg-green-500 rounded-full hover:bg-green-400 transition p-1.5"
+                                                >   
+                                                    <Play className="w-5 h-5 text-black" fill="black" />
                                                 </button>
                                             </div>
                                         ))}
