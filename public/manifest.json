@@ -1,0 +1,22 @@
+{
+    "name": "MusiclyBit",
+    "short_name": "MB",
+    "description": "A social music collaboration app",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#000000",
+    "theme_color": "#ff0000",
+    "icons": [
+      {
+        "src": "assets/logo/musiclybit-logo.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      },
+      {
+        "src": "/assets/logo/musiclybit-logo.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      }
+    ]
+  }
+  
