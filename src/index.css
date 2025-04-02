@@ -77,10 +77,10 @@ body {
 
 /* Scrollbar on Hover/Scrolling */
 *::-webkit-scrollbar-thumb {
-  background: #1db9541d; /* Spotify green */
+  background: #1db95400; /* Spotify green */
 }
 
 *::-webkit-scrollbar-thumb:focus {
-  background: #1ed75f1d; /* Brighter green */
+  background: #1ed75f00; /* Brighter green */
 }
 

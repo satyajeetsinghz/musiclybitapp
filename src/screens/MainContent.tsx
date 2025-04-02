@@ -371,13 +371,18 @@ const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums, favoriteAl
                                 {/* Top Picks Section */}
                                 <div className="w-full min-h-max bg-neutral-00 mt-8 rounded-md">
                                     <div className="pb-3 py-1">
-                                        <h2 className="text-2xl max-md:text-xl font-bold ml-2">Top Picks</h2>
-                                        <div className="flex overflow-x-auto gap-4">
+                                        <h2 className="text-2xl max-md:text-xl font-bold">Top Picks</h2>
+                                        <div className="flex overflow-x-auto gap-2 pb-1">
                                             {topPicks.map((pick) => (
-                                                <div key={pick.id} onClick={() => handlePlaySong(pick)} className="relative w-[160px] max-md:min-w-[160px] md:min-w-[160px] h-[200px] max-md:min-h-[190px] p-2 bg-transparent hover:bg-neutral-800 mt-4 rounded-md group cursor-pointer">
+                                                <div key={pick.id} onClick={() => handlePlaySong(pick)} className="relative w-[160px] max-md:min-w-[160px] md:min-w-[160px] h-[200px] max-md:min-h-[190px] p-2 bg-transparent hover:bg-neutral-800 mt-2 rounded-md group cursor-pointer">
                                                     <img className="w-[180px] h-[130px] object-cover object-center rounded-md" src={pick.image} alt={pick.title} />
-                                                    <p className="pl-0.5 mt-2 text-sm max-md:text-[12px] font-semibold text-neutral-300">{pick.title}</p>
-                                                    <p className="pl-0.5 mt-0.5 max-md:mt-0 text-xs max-md:text-[10px] font-semibold text-neutral-300">{pick.artist}</p>
+                                                    <p className="pl-0.5 mt-2 text-sm max-md:text-[12px] font-semibold text-neutral-300 truncate w-full overflow-hidden whitespace-nowrap">
+                                                        {pick.title}
+                                                    </p>
+                                                    <p className="pl-0.5 mt-0.5 max-md:mt-0 text-xs max-md:text-[10px] font-semibold text-neutral-300 truncate w-full overflow-hidden whitespace-nowrap">
+                                                        {pick.artist}
+                                                    </p>
+
                                                     <button className="absolute bottom-[70px] bg-green-500 rounded-full hover:bg-green-400 transition p-1.5 max-md:bottom-[70px] right-[16px] text-base opacity-0 group-hover:opacity-100">
                                                         <Play className="w-4 h-4 text-black" fill="black" />
                                                     </button>

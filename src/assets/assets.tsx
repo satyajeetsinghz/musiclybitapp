@@ -30,27 +30,52 @@ export const albums = [
 export const topPicks = [
   {
     id: "1",
-    title: "My Time is Now",
-    artist: "John Cena",
-    image: "https://th.bing.com/th/id/OIP.nf38N0RFoOcRl84-mEO5WAHaEo?rs=1&pid=ImgDetMain",
-    audio: "assets/musics/WWE_ The Time Is Now (John Cena).mp3"
+    title: "Masakali",
+    artist: "Mohit Chauhan",
+    image: "assets/musics/album_cover/Cover of Masakali by Mohit Chauhan, A.R. Rahman, Prasoon Joshi.jpg",
+    audio: "assets/musics/Masakali - Mohit Chauhan.mp3"
   },
-  // {
-  //   id: "2",
-  //   title: "Lose Yourself",
-  //   artist: "Eminem",
-  //   image: "https://th.bing.com/th/id/OIP.3LZ8mNoxL8_8lAjeB58JeQHaHa?rs=1&pid=ImgDetMain",
-  // },
-  // {
-  //   id: "3",
-  //   title: "God’s Plan",
-  //   artist: "Drake",
-  //   image: "https://th.bing.com/th/id/OIP.nZOvZW9SEjx2FzN1JXYj7AHaHa?rs=1&pid=ImgDetMain",
-  // },
-  // {
-  //   id: "4",
-  //   title: "Rolling in the Deep",
-  //   artist: "Adele",
-  //   image: "https://th.bing.com/th/id/OIP.Zv7bcmH3X9KdrU2D6YZBGQHaHa?rs=1&pid=ImgDetMain",
-  // },
+  {
+    id: "2",
+    title: "We Don't Talk Anymore (feat. Selena Gomez)",
+    artist: "Charlie Puth, Selena Gomez",
+    image: "assets/musics/album_cover/Cover of We Don't Talk Anymore (feat. Selena Gomez) by Charlie Puth, Selena Gomez.jpg",
+    audio: "assets/musics/We Don't Talk Anymore (feat. Selena Gomez) - Charlie Puth.mp3"
+  },
+  {
+    id: "3",
+    title: "Where Are Now (with Justin Bieber)",
+    artist: "Jack Ü, Skrillex, Diplo, Justin Bieber",
+    image: "assets/musics/album_cover/Cover of Where Are Ü Now (with Justin Bieber) by Jack Ü, Skrillex, Diplo, Justin Bieber.jpg",
+    audio: "assets/musics/Where Are Ü Now (with Justin Bieber) - Jack Ü.mp3"
+  },
+  {
+    id: "4",
+    title: "On My Way",
+    artist: "Alan Walker",
+    image: "assets/musics/album_cover/Cover of On My Way by Alan Walker, Sabrina Carpenter, Farruko.jpg",
+    audio: "assets/musics/On My Way - Alan Walker.mp3"
+  },
+  {
+    id: "5",
+    title: "What Makes You Beautiful",
+    artist: "One Direction",
+    image: "assets/musics/album_cover/Cover of What Makes You Beautiful by One Direction.jpg",
+    audio: "assets/musics/What Makes You Beautiful - One Direction.mp3"
+  },
+  {
+    id: "6",
+    title: "Stressed Out",
+    artist: "Twenty One Pilots",
+    image: "assets/musics/album_cover/Cover of Stressed Out by Twenty One Pilots.jpg",
+    audio: "assets/musics/Stressed Out - Twenty One Pilots.mp3"
+  },
+  {
+    id: "7",
+    title: "Habitual",
+    artist: "Justin Bieber",
+    image: "assets/musics/album_cover/Cover of Habitual by Justin Bieber.jpg",
+    audio: "assets/musics/Habitual - Justin Bieber.mp3"
+  },
+  
 ];
