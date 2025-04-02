@@ -372,7 +372,7 @@ const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums, favoriteAl
                                 <div className="w-full min-h-max bg-neutral-00 mt-8 rounded-md">
                                     <div className="pb-3 py-1">
                                         <h2 className="text-2xl max-md:text-xl font-bold">Top Picks</h2>
-                                        <div className="flex overflow-x-auto gap-2 pb-1">
+                                        <div className="flex overflow-x-auto gap-0 md:gap-2 pb-1">
                                             {topPicks.map((pick) => (
                                                 <div key={pick.id} onClick={() => handlePlaySong(pick)} className="relative w-[160px] max-md:min-w-[160px] md:min-w-[160px] h-[200px] max-md:min-h-[190px] p-2 bg-transparent hover:bg-neutral-800 mt-2 rounded-md group cursor-pointer">
                                                     <img className="w-[180px] h-[130px] object-cover object-center rounded-md" src={pick.image} alt={pick.title} />
