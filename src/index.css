@@ -84,3 +84,22 @@ body {
   background: #1ed75f00; /* Brighter green */
 }
 
+/* Marquee Animation (Tailwind CSS) */
+@keyframes marquee {
+  0%, 20% { transform: translateX(0%); } /* Delay before scrolling */
+  100% { transform: translateX(-50%); }
+}
+.animate-marquee {
+  display: inline-block;
+  animation: marquee 8s linear infinite;
+}
+.animate-marquee-container {
+  display: flex;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

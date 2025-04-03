@@ -244,18 +244,48 @@ const MusicPlayer = () => {
                     {/* Hidden Audio Element */}
                     <audio ref={audioRef} onEnded={handleNext} controls hidden />
 
-                    {/* Album Cover and Metadata  */}
-                    <div className="w-[60%] sm:w-[30%] h-20 py-[8px] px-[2px] md:px-[8px] bg-ed-300 flex cursor-pointer">
-                        <div className="w-[60px] h-[60px] max-xs:w-[50px] max-xs:h-[50px] max-xs:mt-[6px] rounded-md overflow-hidden">
-                            <img className="w-full h-full object-cover object-center" src={currentSong?.image || "https://images.template.net/90836/spotify-album-cover-template-m19i3.jpeg"} alt="" />
+                    {/* Album Cover and Metadata */}
+                    <div className="w-[60%] sm:w-[30%] h-20 flex items-center px-2 md:px-4 cursor-pointer">
+
+                        {/* Album Cover */}
+                        <div className="w-[50px] h-[50px] sm:w-[60px] sm:h-[60px] rounded-md overflow-hidden flex-shrink-0">
+                            <img
+                                className="w-full h-full object-cover object-center"
+                                src={currentSong?.image || "https://images.template.net/90836/spotify-album-cover-template-m19i3.jpeg"}
+                                alt="Album Cover"
+                            />
                         </div>
 
-                        <div className="flex flex-col justify-center pl-3">
-                            <h2 className="text-[12px] max-xs:text-[10px] text-white font-semibold">{currentSong?.title || "Hit Play"}</h2>
-                            <h2 className="text-[10px] max-sm:text-[9px] text-white font-medium mt-0.5 max-sm:mt-0">{currentSong?.artist || "Set the Mood"}</h2>
+                        {/* Metadata */}
+                        <div className="flex flex-col justify-center pl-3 w-full overflow-hidden">
+
+                            {/* Song Title with Marquee */}
+                            <div className="relative w-[90%] sm:w-[80%] overflow-hidden">
+                                {currentSong?.title && currentSong.title.length > 15 ? (
+                                    <div className="whitespace-nowrap flex animate-marquee-container">
+                                        <h2 className="text-[12px] max-xs:text-[10px] text-white font-semibold whitespace-nowrap inline-block animate-marquee">
+                                            {currentSong?.title} &nbsp; • &nbsp;
+                                        </h2>
+                                        <h2 className="text-[12px] max-xs:text-[10px] text-white font-semibold whitespace-nowrap inline-block animate-marquee">
+                                            {currentSong?.title} &nbsp; • &nbsp;
+                                        </h2>
+                                    </div>
+                                ) : (
+                                    <h2 className="text-[12px] max-xs:text-[10px] text-white font-semibold truncate">
+                                        {currentSong?.title || "Hit Play"}
+                                    </h2>
+                                )}
+                            </div>
+
+                            {/* Artist Name (No Marquee) */}
+                            <div className="relative w-[90%] sm:w-[80%] overflow-hidden">
+                                <h2 className="text-[10px] max-sm:text-[9px] text-gray-300 font-medium mt-0.5 max-sm:mt-0 truncate">
+                                    {currentSong?.artist || "Set the Mood"}
+                                </h2>
+                            </div>
                         </div>
+
                     </div>
-                    {/* Album Cover and Metadata ends  */}
 
                     {/* Player Controls  */}
                     <div className="w-[40%] sm:w-[40%] h-20 px-1 py-2 bg-ellow-400 flex flex-col justify-center sm:justify-self-auto items-center">

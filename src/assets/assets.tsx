@@ -38,14 +38,14 @@ export const topPicks = [
   {
     id: "2",
     title: "We Don't Talk Anymore (feat. Selena Gomez)",
-    artist: "Charlie Puth, Selena Gomez",
+    artist: "Charlie Puth",
     image: "assets/musics/album_cover/Cover of We Don't Talk Anymore (feat. Selena Gomez) by Charlie Puth, Selena Gomez.jpg",
     audio: "assets/musics/We Don't Talk Anymore (feat. Selena Gomez) - Charlie Puth.mp3"
   },
   {
     id: "3",
     title: "Where Are Now (with Justin Bieber)",
-    artist: "Jack Ü, Skrillex, Diplo, Justin Bieber",
+    artist: "Jack Ü",
     image: "assets/musics/album_cover/Cover of Where Are Ü Now (with Justin Bieber) by Jack Ü, Skrillex, Diplo, Justin Bieber.jpg",
     audio: "assets/musics/Where Are Ü Now (with Justin Bieber) - Jack Ü.mp3"
   },
