@@ -260,7 +260,7 @@ const MusicPlayer = () => {
                         <div className="flex flex-col justify-center pl-3 w-full overflow-hidden">
 
                             {/* Song Title with Marquee */}
-                            <div className="relative w-[90%] sm:w-[80%] overflow-hidden">
+                            <div className="relative w-[90%] sm:w-[80%] lg:w-[60%] overflow-hidden">
                                 {currentSong?.title && currentSong.title.length > 15 ? (
                                     <div className="whitespace-nowrap flex animate-marquee-container">
                                         <h2 className="text-[12px] max-xs:text-[10px] text-white font-semibold whitespace-nowrap inline-block animate-marquee">
