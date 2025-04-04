@@ -266,7 +266,7 @@ const SongRequest: React.FC<SongRequestProps> = ({ handleBack }) => {
                                     alt={song.name}
                                     className="w-12 h-12 object-cover rounded-md"
                                 />
-                                <p className="text-white max-xs:text-sm">{song.name} - {song.artists[0]?.name}</p>
+                                <p className="text-white font-semibold max-xs:text-sm">{song.name} - {song.artists[0]?.name}</p>
                             </div>
                             <button
                                 onClick={() => handleRequest(song)}
