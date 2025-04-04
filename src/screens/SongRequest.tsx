@@ -258,7 +258,7 @@ const SongRequest: React.FC<SongRequestProps> = ({ handleBack }) => {
                         </button>
                     </div>
                     {searchResults.map((song) => (
-                        <li key={song.id} className="flex justify-between items-center p-2 hover:bg-neutral-700 mb-1 cursor-pointer border-b-[1px] border-b-green-400 last:border-b-0 rounded-md">
+                        <li key={song.id} className="flex justify-between items-center p-2 hover:bg-neutral-800 mb-1 cursor-pointer last:border-b rounded-md">
                             <div className="flex items-center gap-3">
                                 {/* 🎵 Album Cover */}
                                 <img
@@ -287,7 +287,7 @@ const SongRequest: React.FC<SongRequestProps> = ({ handleBack }) => {
                         <h3 className="text-xl text-green-400 font-bold ml-2 mb-4">Song Requests</h3>
                         {requests.length > 0 ? (
                             requests.map((song) => (
-                                <li key={song.id} className="flex justify-between items-center p-2.5 mb-1 border-b-[1px] border-b-green-400 hover:bg-neutral-700 rounded-md">
+                                <li key={song.id} className="flex justify-between items-center p-2.5 mb-1 hover:bg-neutral-800 rounded-md">
                                     <div className="flex items-center gap-3 w-full">
                                         {/* 🎵 Album Cover */}
                                         <img
