@@ -1,5 +1,5 @@
 import { useMusic } from "../context/MusicContext";
-import { albums } from "../assets/assets";
+import { albums, topPicks, popCentral } from "../assets/assets";
 import { useEffect, useRef, useState } from "react";
 
 const MusicPlayer = () => {
@@ -12,6 +12,12 @@ const MusicPlayer = () => {
     const [currentSongIndex, setCurrentSongIndex] = useState(0);
     const [volume, setVolume] = useState(1);
     const [isMuted, setIsMuted] = useState(false);
+
+    const getAllSongs = () => {
+        const albumSongs = albums.flatMap(album => album.songs);
+        return [...albumSongs, ...topPicks, ...popCentral];
+    };
+
 
     // Retrieve last played song from localStorage
     useEffect(() => {
@@ -179,45 +185,36 @@ const MusicPlayer = () => {
 
     // Handle next song
     const handleNext = () => {
-        if (!albums.length) return;
+        const allSongs = getAllSongs();
+        const currentIndex = allSongs.findIndex(song =>
+            song.title === currentSong?.title && song.artist === currentSong?.artist
+        );
 
-        let newSongIndex = currentSongIndex + 1;
-        let newAlbumIndex = currentAlbumIndex;
+        if (currentIndex === -1) return;
 
-        if (newSongIndex >= albums[newAlbumIndex].songs.length) {
-            newAlbumIndex = (newAlbumIndex + 1) % albums.length;
-            newSongIndex = 0;
-        }
+        const nextIndex = (currentIndex + 1) % allSongs.length;
+        const nextSong = allSongs[nextIndex];
 
-        const nextSong = albums[newAlbumIndex]?.songs[newSongIndex];
-        if (nextSong) {
-            setCurrentAlbumIndex(newAlbumIndex);
-            setCurrentSongIndex(newSongIndex);
-            setCurrentSong(nextSong);
-            setIsPlaying(true);
-        }
+        setCurrentSong(nextSong);
+        setIsPlaying(true);
     };
 
     // Handle previous song
     const handlePrev = () => {
-        if (!albums.length) return;
+        const allSongs = getAllSongs();
+        const currentIndex = allSongs.findIndex(song =>
+            song.title === currentSong?.title && song.artist === currentSong?.artist
+        );
 
-        let newSongIndex = currentSongIndex - 1;
-        let newAlbumIndex = currentAlbumIndex;
+        if (currentIndex === -1) return;
 
-        if (newSongIndex < 0) {
-            newAlbumIndex = (newAlbumIndex - 1 + albums.length) % albums.length;
-            newSongIndex = albums[newAlbumIndex].songs.length - 1;
-        }
+        const prevIndex = (currentIndex - 1 + allSongs.length) % allSongs.length;
+        const prevSong = allSongs[prevIndex];
 
-        const prevSong = albums[newAlbumIndex]?.songs[newSongIndex];
-        if (prevSong) {
-            setCurrentAlbumIndex(newAlbumIndex);
-            setCurrentSongIndex(newSongIndex);
-            setCurrentSong(prevSong);
-            setIsPlaying(true);
-        }
+        setCurrentSong(prevSong);
+        setIsPlaying(true);
     };
+
 
     // Toggle Mute/Unmute
     const toggleMute = () => {
