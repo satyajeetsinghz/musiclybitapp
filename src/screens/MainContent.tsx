@@ -1,5 +1,5 @@
 import { Play, X } from "lucide-react";
-import { albums, topPicks } from "../assets/assets";
+import { albums, popCentral, topPicks } from "../assets/assets";
 import { useMusic } from "../context/MusicContext";
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
@@ -118,7 +118,7 @@ const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums, favoriteAl
 
 
     return (
-        <div className="w-[70%] max-md:w-full max-h-[90%] max-md:max-h-full max-md:px-1 bg-neutral-900 text-white rounded-md relative">
+        <div className="w-[70%] max-md:w-full max-h-[90%] max-md:max-h-full max-md:px-1 bg-neutral-900 text-white rounded-md relative flex flex-col overflow-y-auto">
 
             {/* Popup Notification */}
             {popupMessage && (
@@ -392,6 +392,32 @@ const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums, favoriteAl
                                     </div>
                                 </div>
                                 {/* Top Picks Section */}
+
+
+                                {/* Pop Central Section */}
+                                <div className="w-full min-h-max bg-neutral-00 mb-8 sm:mb-1 rounded-md">
+                                    <div className="pb-3 py-1">
+                                        <h2 className="text-2xl max-md:text-xl font-bold">Pop Central</h2>
+                                        <div className="flex overflow-x-auto gap-0 md:gap-2 pb-1">
+                                            {popCentral.map((pick) => (
+                                                <div key={pick.id} onClick={() => handlePlaySong(pick)} className="relative w-[160px] max-md:min-w-[160px] md:min-w-[160px] h-[200px] max-md:min-h-[190px] p-2 bg-transparent hover:bg-neutral-800 mt-2 rounded-md group cursor-pointer">
+                                                    <img className="w-[180px] h-[130px] object-cover object-center rounded-md" src={pick.image} alt={pick.title} />
+                                                    <p className="pl-0.5 mt-2 text-sm max-md:text-[12px] font-semibold text-neutral-300 truncate w-full overflow-hidden whitespace-nowrap">
+                                                        {pick.title}
+                                                    </p>
+                                                    <p className="pl-0.5 mt-0.5 max-md:mt-0 text-xs max-md:text-[10px] font-semibold text-neutral-300 truncate w-full overflow-hidden whitespace-nowrap">
+                                                        {pick.artist}
+                                                    </p>
+
+                                                    <button className="absolute bottom-[70px] bg-green-500 rounded-full hover:bg-green-400 transition p-1.5 max-md:bottom-[70px] right-[16px] text-base opacity-0 group-hover:opacity-100">
+                                                        <Play className="w-4 h-4 text-black" fill="black" />
+                                                    </button>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </div>
+                                {/* Pop Central Section */}
                             </>
                         )}
                     </div>

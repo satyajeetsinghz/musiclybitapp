@@ -77,5 +77,59 @@ export const topPicks = [
     image: "assets/musics/album_cover/Cover of Habitual by Justin Bieber.jpg",
     audio: "assets/musics/Habitual - Justin Bieber.mp3"
   },
-  
+
+];
+
+// Top picks section, featuring standalone songs with title, artist, and image
+export const popCentral = [
+  {
+    id: "1",
+    title: "Somebody",
+    artist: "Justin Bieber",
+    image: "assets/musics/album_cover/Cover of Somebody by Justin Bieber.jpg",
+    audio: "assets/musics/Somebody - Justin Bieber.mp3"
+  },
+  {
+    id: "2",
+    title: "High",
+    artist: "The Chainsmokers",
+    image: "assets/musics/album_cover/Cover of High by The Chainsmokers.jpg",
+    audio: "assets/musics/High - The Chainsmokers.mp3"
+  },
+  {
+    id: "3",
+    title: "Agora Hills",
+    artist: "Doja Cat",
+    image: "assets/musics/album_cover/Cover of Agora Hills by Doja Cat.jpg",
+    audio: "assets/musics/Agora Hills - Doja Cat.mp3"
+  },
+  {
+    id: "4",
+    title: "Everything Has Changed (feat. Ed Sheeran) (Taylor’s Version)",
+    artist: "Taylor Swift",
+    image: "assets/musics/album_cover/Cover of Everything Has Changed (feat. Ed Sheeran) (Taylor’s Version) by Taylor Swift, Ed Sheeran.jpg",
+    audio: "assets/musics/Everything Has Changed (feat. Ed Sheeran) (Taylor’s Version) - Taylor Swift.mp3"
+  },
+  {
+    id: "5",
+    title: "No Brainer",
+    artist: "DJ Khaled",
+    image: "assets/musics/album_cover/Cover of No Brainer by DJ Khaled, Justin Bieber, Quavo, Chance the Rapper.jpg",
+    audio: "assets/musics/No Brainer - DJ Khaled.mp3"
+  },
+  {
+    id: "6",
+    title: "Stardust",
+    artist: "ZAYN",
+    image: "assets/musics/album_cover/Cover of Stardust by ZAYN.jpg",
+    audio: "assets/musics/Stardust - ZAYN.mp3"
+  },
+  {
+    id: "7",
+    title: "FRIENDS",
+    artist: "Marshmello",
+    image: "assets/musics/album_cover/Cover of FRIENDS by Marshmello, Anne-Marie.jpg",
+    audio: "assets/musics/FRIENDS - Marshmello.mp3"
+  },
+
 ];
