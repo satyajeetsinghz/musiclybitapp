@@ -401,7 +401,7 @@ const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums, favoriteAl
 
 
                                 {/* Pop Central Section */}
-                                <div className="w-full min-h-max bg-neutral-00 mb-8 sm:mb-1 rounded-md">
+                                <div className="w-full min-h-max bg-neutral-00 mb-12 sm:mb-1 rounded-md">
                                     <div className="pb-3 py-1">
                                         <div className="inline-flex justify-between w-full">
                                             <h2 className="text-2xl max-md:text-xl font-bold">Pop Central</h2>
