@@ -30,11 +30,11 @@ const Navbar = () => {
 
                 {/* <img className="w-32 hidden md:block" src="assets/logo/musicly-text-white-logo.svg" alt="" /> */}
                 {/* Beta Version Logo Larger  */}
-                <img className="w-36 hidden md:block" src="assets/logo/musiclybeta-text-white-logo.svg" alt="" />
+                <img className="w-40 hidden md:block" src="assets\logo\musiclybit_website_logo.svg" alt="" />
 
                 {/* <img className="w-16 md:hidden" src="/assets/logo/mb-text-white-logo.svg" alt="" /> */}
                 {/* Beta Version Logo Mobile  */}
-                <img className="w-20 md:hidden" src="/assets/logo/musicly_BETA-text-white-logo.svg" alt="" />
+                <img className="w-32 md:hidden" src="assets\logo\musiclybit_website_logo.svg" alt="" />
 
             </div>
 
