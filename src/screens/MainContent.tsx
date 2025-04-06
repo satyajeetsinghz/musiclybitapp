@@ -128,8 +128,16 @@ const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums, favoriteAl
 
     return (
         <div className="w-[70%] max-md:w-full max-h-[90%] max-md:max-h-full max-md:px-1 bg-neutral-900 text-white rounded-md relative flex flex-col overflow-y-auto">
-            <div className="relative top-0 mx-2 my-2">
-                <BannerAd />
+            <div className="relative top-0 my-1">
+                <BannerAd onClick={() =>
+                    handlePlaySong({
+                        id: "1",
+                        title: "Azizam",
+                        artist: "Ed Sheeran",
+                        image: "assets/musics/album_cover/Cover of Azizam by Ed Sheeran.jpg",
+                        audio: "assets/musics/Azizam - Ed Sheeran.mp3",
+                    })
+                } />
             </div>
 
 
