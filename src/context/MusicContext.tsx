@@ -7,6 +7,7 @@ interface Song {
     album?: string;
     image?: string;
     audio: string;
+    isNewRelease?: boolean; // Optional
 }
 
 interface MusicContextType {

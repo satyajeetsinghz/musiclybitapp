@@ -9,6 +9,7 @@ import { Dispatch, SetStateAction } from "react";
 import { Album, Song } from "../types"; // ✅ Ensure all files use the same Album type
 import MusicPage from "./MusicPage";
 import SongRequest from "./SongRequest";
+import BannerAd from "../components/BannerAd";
 
 
 interface MainContentProps {
@@ -116,9 +117,21 @@ const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums, favoriteAl
         music.setQueue?.(album.songs); // Assuming `setQueue` is part of your music context
     };
 
+    const [durations, setDurations] = useState<{ [key: string]: string }>({});
+
+    const formatDuration = (seconds: number) => {
+        const min = Math.floor(seconds / 60);
+        const sec = Math.floor(seconds % 60);
+        return `${min}:${sec < 10 ? '0' + sec : sec}`;
+    };
+
 
     return (
         <div className="w-[70%] max-md:w-full max-h-[90%] max-md:max-h-full max-md:px-1 bg-neutral-900 text-white rounded-md relative flex flex-col overflow-y-auto">
+            <div className="relative top-0 mx-2 my-2">
+                <BannerAd />
+            </div>
+
 
             {/* Popup Notification */}
             {popupMessage && (
@@ -171,7 +184,7 @@ const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums, favoriteAl
                         <button onClick={handleBack} className="flex absolute top-[6px] left-[10px] items-center justify-center gap-2 rounded-full bg-neutral-950 hover:bg-neutral-800 text-gray-300 size-8">
                             <img className="w-[10px]" src="/assets/player ico/left-arrow.svg" alt="" />
                         </button>
-                        <img className="w-full h-full object-cover object-center rounded-t-md" src={selectedAlbum.cover} alt={selectedAlbum.name} />
+                        <img className="w-full h-full object-cover object-center lg:object-top rounded-t-md" src={selectedAlbum.cover} alt={selectedAlbum.name} />
                         {/* Black shade */}
                         <div className="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-black to-transparent opacity-90"></div>
                         <div className="px-5 py-2 absolute bottom-[30px] left-0">
@@ -246,9 +259,24 @@ const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums, favoriteAl
                                         <h2 className="text-sm font-medium text-gray-400">{song.dateAdded || "-"}</h2>
                                     </div>
 
+                                    {/* Hidden Audio Loader */}
+                                    <audio
+                                        src={song.audio}
+                                        onLoadedMetadata={(e) => {
+                                            const duration = e.currentTarget.duration;
+                                            setDurations((prev) => ({
+                                                ...prev,
+                                                [song.id || `${index}`]: formatDuration(duration),
+                                            }));
+                                        }}
+                                        className="hidden"
+                                    />
+
                                     {/* Song Duration */}
                                     <div className="w-[10%] min-w-[80px] text-right hidden lg:block pr-6">
-                                        <h2 className="text-sm font-medium text-gray-400">3:56</h2>
+                                        <h2 className="text-sm font-medium text-gray-400">
+                                            {durations[song.id || `${index}`] || "0:00"}
+                                        </h2>
                                     </div>
                                 </div>
                             ))}
@@ -425,6 +453,11 @@ const MainContent: React.FC<MainContentProps> = ({ setFavoriteAlbums, favoriteAl
                                                     <button className="absolute bottom-[70px] bg-green-500 rounded-full hover:bg-green-400 transition p-1.5 max-md:bottom-[70px] right-[16px] text-base opacity-0 group-hover:opacity-100">
                                                         <Play className="w-4 h-4 text-black" fill="black" />
                                                     </button>
+                                                    {pick.isNewRelease && (
+                                                        <button className="absolute top-[12px] right-3 bg-gradient-to-r from-pink-600 via-pink-400 to-red-400 text-white font-semibold px-2 py-0.5 rounded-full text-[8px] shadow-lg animate-pulse backdrop-blur-sm border border-white/20">
+                                                            New Release
+                                                        </button>
+                                                    )}
                                                 </div>
                                             ))}
                                         </div>

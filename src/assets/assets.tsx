@@ -10,8 +10,9 @@ export const albums = [
 
     // Each album contains a list of songs with details like title, artist, and audio path
     songs: [
-      { id: "1", title: "Shape of You", artist: "Ed Sheeran", audio: "/assets/musics/Shape of You - Ed Sheeran.mp3", image: "/assets/musics/album_cover/Cover of Shape of You by Ed Sheeran.jpg", dateAdded: "Dec 10,2021" },
-      { id: "2", title: "Perfect", artist: "Ed Sheeran", audio: "/assets/musics/Perfect - Ed Sheeran.mp3", image: "/assets/musics/album_cover/Cover of Shape of You by Ed Sheeran.jpg", dateAdded: "Dec 10,2021" },
+      { id: "1", title: "Azizam", artist: "Ed Sheeran", audio: "assets/musics/Azizam - Ed Sheeran.mp3", image: "assets/musics/album_cover/Cover of Azizam by Ed Sheeran.jpg", dateAdded: "April 6, 2025" },
+      { id: "2", title: "Shape of You", artist: "Ed Sheeran", audio: "/assets/musics/Shape of You - Ed Sheeran.mp3", image: "/assets/musics/album_cover/Cover of Shape of You by Ed Sheeran.jpg", dateAdded: "Dec 10, 2021" },
+      { id: "3", title: "Perfect", artist: "Ed Sheeran", audio: "/assets/musics/Perfect - Ed Sheeran.mp3", image: "/assets/musics/album_cover/Cover of Shape of You by Ed Sheeran.jpg", dateAdded: "Dec 10, 2021" },
     ],
   },
   // {
@@ -84,48 +85,56 @@ export const topPicks = [
 export const popCentral = [
   {
     id: "1",
+    title: "Azizam",
+    artist: "Ed Sheeran",
+    image: "assets/musics/album_cover/Cover of Azizam by Ed Sheeran.jpg",
+    audio: "assets/musics/Azizam - Ed Sheeran.mp3",
+    isNewRelease: true // 👈 Add this
+  },
+  {
+    id: "2",
     title: "Somebody",
     artist: "Justin Bieber",
     image: "assets/musics/album_cover/Cover of Somebody by Justin Bieber.jpg",
     audio: "assets/musics/Somebody - Justin Bieber.mp3"
   },
   {
-    id: "2",
+    id: "3",
     title: "High",
     artist: "The Chainsmokers",
     image: "assets/musics/album_cover/Cover of High by The Chainsmokers.jpg",
     audio: "assets/musics/High - The Chainsmokers.mp3"
   },
   {
-    id: "3",
+    id: "4",
     title: "Agora Hills",
     artist: "Doja Cat",
     image: "assets/musics/album_cover/Cover of Agora Hills by Doja Cat.jpg",
     audio: "assets/musics/Agora Hills - Doja Cat.mp3"
   },
   {
-    id: "4",
+    id: "5",
     title: "Everything Has Changed (feat. Ed Sheeran) (Taylor’s Version)",
     artist: "Taylor Swift",
     image: "assets/musics/album_cover/Cover of Everything Has Changed (feat. Ed Sheeran) (Taylor’s Version) by Taylor Swift, Ed Sheeran.jpg",
     audio: "assets/musics/Everything Has Changed (feat. Ed Sheeran) (Taylor’s Version) - Taylor Swift.mp3"
   },
   {
-    id: "5",
+    id: "6",
     title: "No Brainer",
     artist: "DJ Khaled",
     image: "assets/musics/album_cover/Cover of No Brainer by DJ Khaled, Justin Bieber, Quavo, Chance the Rapper.jpg",
     audio: "assets/musics/No Brainer - DJ Khaled.mp3"
   },
   {
-    id: "6",
+    id: "7",
     title: "Stardust",
     artist: "ZAYN",
     image: "assets/musics/album_cover/Cover of Stardust by ZAYN.jpg",
     audio: "assets/musics/Stardust - ZAYN.mp3"
   },
   {
-    id: "7",
+    id: "8",
     title: "FRIENDS",
     artist: "Marshmello",
     image: "assets/musics/album_cover/Cover of FRIENDS by Marshmello, Anne-Marie.jpg",
